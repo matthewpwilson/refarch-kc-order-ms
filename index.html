@@ -1,0 +1,673 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.0.1">
+    
+    
+      
+        <title>Order Microservice CQRS and Event Sourcing</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/application.982221ab.css">
+      
+      
+    
+    
+      <script src="assets/javascripts/modernizr.1f0bcf2b.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#k-container-shipment-order-management-service" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="." title="Order Microservice CQRS and Event Sourcing" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Order Microservice CQRS and Event Sourcing
+            </span>
+            <span class="md-header-nav__topic">
+              Implementation considerations, build, run
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="." title="Order Microservice CQRS and Event Sourcing" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Order Microservice CQRS and Event Sourcing
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Implementation considerations, build, run
+      </label>
+    
+    <a href="." title="Implementation considerations, build, run" class="md-nav__link md-nav__link--active">
+      Implementation considerations, build, run
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-stories" title="User stories" class="md-nav__link">
+    User stories
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-approach" title="Implementation approach" class="md-nav__link">
+    Implementation approach
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-event-model" title="Data and Event Model" class="md-nav__link">
+    Data and Event Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build-and-run" title="How to build and run" class="md-nav__link">
+    How to build and run
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
+    Pre-requisites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build" title="Build" class="md-nav__link">
+    Build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run" title="Run" class="md-nav__link">
+    Run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#event-sourcing" title="Event sourcing pattern" class="md-nav__link">
+      Event sourcing pattern
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#command-query-responsibility-segregation-cqrs-pattern.md" title="CQRS pattern" class="md-nav__link">
+      CQRS pattern
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="deployments/" title="Deployments" class="md-nav__link">
+      Deployments
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-stories" title="User stories" class="md-nav__link">
+    User stories
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-approach" title="Implementation approach" class="md-nav__link">
+    Implementation approach
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-event-model" title="Data and Event Model" class="md-nav__link">
+    Data and Event Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build-and-run" title="How to build and run" class="md-nav__link">
+    How to build and run
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
+    Pre-requisites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build" title="Build" class="md-nav__link">
+    Build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run" title="Run" class="md-nav__link">
+    Run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="k-container-shipment-order-management-service">K Container Shipment Order Management Service</h1>
+<p>This project is demonstrating, one of the possible implementation of the Command Query Responsibility Segregation and event sourcing patterns applied to container shipment management service. It is part of the <a href="https://ibm-cloud-architecture.github.io/refarch-eda">Event Driven Architecture</a> reference architecture. From a use case point of view, it implements the order management for the order from the manufacturer to the shipping company of the <a href="https://ibm-cloud-architecture.github.io/refarch-kc">K Container shipment process</a> microservices. The business process is defined <a href="https://ibm-cloud-architecture.github.io/refarch-kc/introduction/">here</a>.</p>
+<p>One of the business requirements for adopting event sourcing and CQRS patterns is to be able to get visibility to the history of orders and track the good shipment progress over time. This would include the ability to determine: </p>
+<ol>
+<li>How frequently does an order get cancelled after it is placed but before an empty container is delivered to pick up location or loaded ?</li>
+<li>How often does an order get cancelled after the order is confirmed, a container assigned and goods loaded into it?</li>
+<li>What are all events for a particular order and associated container shipment?  </li>
+<li>Has the cold chain been protected on this particular order?</li>
+<li>How long it takes to deliver a container to pick up location?</li>
+</ol>
+<p>To answer the first question we need events like OrderPlaced(orderId), OrderCancelled(orderID) and in the read model the OrdersStatuses(orderId, status, timestamp); OrderStatusTransition(orderId, oldStatus, new Status timestamp) and then OrdersCancelledAfterPlaced(orderId, timestamp). We will detail how to implement those functions in later section.</p>
+<h2 id="user-stories">User stories</h2>
+<p>The business requirements is presented in <a href="https://ibm-cloud-architecture.github.io/refarch-kc/analysis/readme/">this note</a></p>
+<p>The following user stories are done in this project:</p>
+<ul>
+<li>[ ] As a manufacturer manager I want to enter container shipment order information like product reference, quantity,  pickup from address, earliest pickup date, shipment to address,  shipment by date, and required temperature in transit range so the shipping company can give me back an order confirmation ( including the orderID), expected pickup and delivery dates, the assigned voyage and ship name<blockquote>
+<p>As the microservice will not have a dedicated UI, we are using the demonstration UI to define forms to gather the data. So this user story is implemented in the kc-ui project, and in this microservice we need to offer the create and update operations and get by order ID</p>
+</blockquote>
+</li>
+<li>[ ] As a manufacturer manager I want to read the status of an order given its order id and receive a report with the full event history of related order, voyage ship and container events. <blockquote>
+<p>The order id is generated by the order create operation, and is immutable. An order is assigned to a voyage at the time it is created.</p>
+</blockquote>
+</li>
+<li>[ ] As a shipment company manager I want to update the status of an order, and add voyage, container and ship information once I know them, also possible modify pickup date and expected delivery date.</li>
+<li>[ ] As a shipment manager I want to be able to assign a shipment request from a customer to a specific voyage in order to create a confirmed order. The selected voyage must be from a source port near the pickup location travelling to a destination port near the delivery location requested by the customer.  It must be within the time window specified by the customer in the order request.  The selected voyage must have free space available ( capacity not previously assigned to other orders) to accomodate the number of containers specified by the customer in their shipment request.  <blockquote>
+<p>Same as above, the UI is in kc-ui project, so here is a model and the update operation.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="implementation-approach">Implementation approach</h2>
+<p>As introduced in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc/design/readme/">high level design note</a> the order life cycle looks like in the following diagram:</p>
+<p><img alt="" src="order-life-cycle.png" /></p>
+<p>The order microservice supports the implementations of this life cycle, using event sourcing and CQRS.</p>
+<p>With <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#command-query-responsibility-segregation-cqrs-pattern">CQRS</a> we will separate the 'write model' from the read. The Command microservice implements the write model and exposes a set of REST end points for Creating Order, Updating Order and getting Order per ID. The query service will address complex queries to support adhoc business requirements and joining data between different entities like the order, the containers and the voyages. So we have two Java project to support each service implementation. Each service is packaged as container and deployable to Kubernetes. </p>
+<ul>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/tree/master/order-command-ms">Order command microservice</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/tree/master/order-query-ms">Order query microservice</a></li>
+</ul>
+<p>As some requirements are related to historical query, using an event approach we need to keep event on what happens to the order. Instead of implementing a complex logic with the query and command services the event sourcing is supported by using Kafka topics. The following diagram illustrates the CQRS and event sourcing applied to the order management service. Client to the REST api, like a back end for front end app, performs a HTTP POST operation with the order data. The command generates event and persist order on its own data source. The query part is a consumer of event and build its own projections to support the different queries:</p>
+<p><img alt="" src="order-ms-cqrs-es.png" /> </p>
+<p>The datasource at the command level, may not be necessary, but we want to illustrate here the fact that it is possible to have a SQL based database or a document oriented database to keep the order last state: a call to get /orders/{id} will return the current order state. </p>
+<p>For the query part the projection can be kept in memory, depending of the amount of data to gather, and the view can be built by re-reading the event store. </p>
+<p>An alternate solution is to have the BFF pushing events to the event source and then having the order service consuming event to persist them, as illustrated in the following diagram:</p>
+<p><img alt="" src="bff-es-cqrs.png" /></p>
+<p>As the BFF still needs to get order by ID or perform complex query it has to access the order service using HTTP, we could image the BFF developers prefer to use one communication protocol and adding kafka producer was not their cup of tea.  </p>
+<p>The following sequence diagram illustrates the relationships between the components.</p>
+<p><img alt="" src="order-cmd-query-flow.png" /></p>
+<p>To avoid transaction between the database update and the event publisher, the choice is to publish the event as soon as it is received and use a consumer inside the command service to load the data and save to the database. This is illustrated in <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#the-consistency-challenge">this article.</a></p>
+<p>The /order POST REST end point source code is <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java#L51-L74">here</a></p>
+<p>and the <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderAdminService.java#L35">order events consumer</a> in the command pattern.</p>
+<p>See the class <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java">OrderCRUDService.java</a>.
+<em> Produce order events to the <code>orders</code> topic. 
+</em> Consume events to update the state of the order or enrich it with new elements.</p>
+<p>When the application starts there is a <a href="https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html">ServletContextListener</a> class started to create a consumer to subscribe to order events (different types) from <code>orders</code> topic. When consumer reaches an issue to get event it creates an error to the <code>errors</code> topic, so administrator user could replay the event source from the last committed offset. Any kafka broker communication issue is shutting down the consumer loop.</p>
+<h2 id="data-and-event-model">Data and Event Model</h2>
+<p>By applying a domain-driven design we can identify aggregates, entities, value objects and domain events. Those elements help us to be our information model as classes. For any event-driven microservice you need to assess what data to carry in the event and what persist in the potential data source. 
+The following diagram illustrates the different data models in the context of this order microservice:</p>
+<p><img alt="" src="order-evt-data.png" /></p>
+<p>The Order entered in the User interface is defined like:</p>
+<pre><code> class Address {
+    street: string;
+    city: string;
+    country: string;
+    state: string;
+    zipcode: string;
+}
+
+ class Order {
+    orderID: string;
+    customerID: string;
+    pickupAddress: Address;
+    destinationAddress: Address;
+    productID: string;
+    quantity: string;
+    expectedDeliveryDate: string;   //  date as ISO format
+}
+</code></pre>
+
+<p>The information to persist in the database may be used to do analytics, and get the last status of order. It may look use relational database and may have information like:</p>
+<pre><code> class Address {
+    street: string;
+    city: string;
+    country: string;
+    state: string;
+    zipcode: string;
+}
+
+ class Order {
+    orderID: string;
+    customerID: string;
+    pickupAddress: Address;
+    destinationAddress: Address;
+    productID: string;
+    quantity: string;
+    expectedDeliveryDate: string;   //  date as ISO format
+    pickupDate: string;   //  date as ISO format
+}
+
+class OrderContainers {
+    orderID: string;
+    containerID: string[];
+}
+</code></pre>
+
+<p>On the event side we may generate OrderCreated, OrderCancelled,... But what is in the event payload? We can propose the following structure where type will help to specify the event type and getting a generic payload we can have anything in it.</p>
+<pre><code>class OrderEvent {
+    orderId: string;
+    timestamp: string;   //  date as ISO format
+    payload: any;
+    type: string;
+    version: string;
+}
+</code></pre>
+
+<p>Also do we need to ensure consistency between those data views? Where is the source of truth? </p>
+<p>In traditional SOA service with application maintaining all the tables and beans to support all the business requirements, ACID transactions support the consistency and integrity of the data, and the database is one source of truth. With microservices responsible to manage its own business entity, clearly separated from other business entities, data eventual consistency is the standard. If you want to read more about the Event Sourcing and CQRS patterns <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns">see this article.</a></p>
+<h2 id="how-to-build-and-run">How to build and run</h2>
+<h3 id="pre-requisites">Pre-requisites</h3>
+<p>You can have the following installed on your computer or use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/scripts/docker-java-tools">our docker image</a> to get those dependencies integrated in a docker image and you can use to build, test and package the java programs.
+<em> <a href="https://maven.apache.org/install.html">Maven</a>
+</em> Java 8: Any compliant JVM should work.
+  * <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java 8 JDK from Oracle</a>
+  * <a href="http://www.ibm.com/developerworks/java/jdk/">Java 8 JDK from IBM (AIX, Linux, z/OS, IBM i)</a>,
+    or <a href="https://developer.ibm.com/assets/wasdev/#filter/assetTypeFilters=PRODUCT">Download a Liberty server package</a>
+    that contains the IBM JDK (Windows, Linux)</p>
+<h3 id="build">Build</h3>
+<p>Each microservice has a build script to perform the maven package and build the docker image. See <code>scripts</code> folder.</p>
+<ul>
+<li>For order-command-ms
+ <code>./scripts/buildDocker.sh</code></li>
+<li>For order-query-ms
+ <code>./scripts/buildDocker.sh</code></li>
+</ul>
+<p>To build without docker image:</p>
+<ul>
+<li><code>mvn install</code> or <code>mvn install  -DskipITs</code> to bypass integration tests, as they need kafka and a running Liberty server</li>
+</ul>
+<h3 id="run">Run</h3>
+<p>You can start the Liberty server locally with</p>
+<ul>
+<li><code>mvn liberty:run-server</code>  to start the server with the deployed wars.</li>
+</ul>
+<p>Or run the complete solution locally using <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/kc-solution-compose.yml">docker compose</a> from the <a href="https://github.com/ibm-cloud-architecture/refarch-kc">refarck-kc</a> project to start a local kafka broker and all the components:</p>
+<p>One time execution of the kafka broker: </p>
+<pre><code class="shell">cd refarch-kc/docker
+docker-compose -f backbone-compose.yml up
+</code></pre>
+
+<p>Start the solution</p>
+<pre><code class="shell">docker-compose -f bkc-solution-compose.yml up
+</code></pre>
+
+<p>And stop everything:</p>
+<pre><code>docker-compose -f kc-solution-compose.yml down
+docker-compose -f backbone-compose.yml down
+</code></pre>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="deployments/" title="Deployments" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Deployments
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/application.b806dc00.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      
+    
+  </body>
+</html>
