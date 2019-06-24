@@ -36,7 +36,7 @@
     
     
       
-        <title>Deployments - Order Microservice CQRS and Event Sourcing</title>
+        <title>Kubernetes Deployments - Order Microservice CQRS and Event Sourcing</title>
       
     
     
@@ -121,7 +121,7 @@
               Order Microservice CQRS and Event Sourcing
             </span>
             <span class="md-header-nav__topic">
-              Deployments
+              Kubernetes Deployments
             </span>
           
         </div>
@@ -243,8 +243,20 @@
 
 
   <li class="md-nav__item">
-    <a href=".." title="Implementation considerations, build, run" class="md-nav__link">
-      Implementation considerations, build, run
+    <a href=".." title="Implementation considerations" class="md-nav__link">
+      Implementation considerations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../build-run/" title="Build and run locally" class="md-nav__link">
+      Build and run locally
     </a>
   </li>
 
@@ -288,11 +300,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Deployments
+        Kubernetes Deployments
       </label>
     
-    <a href="./" title="Deployments" class="md-nav__link md-nav__link--active">
-      Deployments
+    <a href="./" title="Kubernetes Deployments" class="md-nav__link md-nav__link--active">
+      Kubernetes Deployments
     </a>
     
       
@@ -304,6 +316,20 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-locally-on-minikube" title="Deploy locally on Minikube" class="md-nav__link">
+    Deploy locally on Minikube
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-locally-using-docker-compose" title="Deploy locally using docker-compose" class="md-nav__link">
+    Deploy locally using docker-compose
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#deploy-to-iks" title="Deploy to IKS" class="md-nav__link">
@@ -351,6 +377,20 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#deploy-locally-on-minikube" title="Deploy locally on Minikube" class="md-nav__link">
+    Deploy locally on Minikube
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-locally-using-docker-compose" title="Deploy locally using docker-compose" class="md-nav__link">
+    Deploy locally using docker-compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#deploy-to-iks" title="Deploy to IKS" class="md-nav__link">
     Deploy to IKS
   </a>
@@ -384,6 +424,15 @@
                 
                 
                 <h1 id="deployments">Deployments</h1>
+<p>Be sure to have read the <a href="../build-run/">build and run article before</a>.</p>
+<h2 id="deploy-locally-on-minikube">Deploy locally on Minikube</h2>
+<h2 id="deploy-locally-using-docker-compose">Deploy locally using docker-compose</h2>
+<p>The approach is simple, compile, build the war file, build the docker image and run docker compose for the backend solution.</p>
+<p>To start the solution go to the <code>refarch-kc/docker</code> folder</p>
+<div class="codehilite"><pre><span></span>source ../scripts/setenv.sh LOCAL
+docker-compose -f kc-solution-compose.yml up
+</pre></div>
+
 <h2 id="deploy-to-iks">Deploy to IKS</h2>
 <h2 id="deploy-to-icp">Deploy to ICP</h2>
                 
@@ -406,7 +455,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href=".." title="Implementation considerations, build, run" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../build-run/" title="Build and run locally" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -415,7 +464,7 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Implementation considerations, build, run
+                Build and run locally
               </span>
             </div>
           </a>

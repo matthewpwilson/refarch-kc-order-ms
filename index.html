@@ -96,7 +96,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#k-container-shipment-order-management-service" tabindex="1" class="md-skip">
+      <a href="#reefer-container-shipment-order-management-service" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -121,7 +121,7 @@
               Order Microservice CQRS and Event Sourcing
             </span>
             <span class="md-header-nav__topic">
-              Implementation considerations, build, run
+              Implementation considerations
             </span>
           
         </div>
@@ -252,11 +252,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Implementation considerations, build, run
+        Implementation considerations
       </label>
     
-    <a href="." title="Implementation considerations, build, run" class="md-nav__link md-nav__link--active">
-      Implementation considerations, build, run
+    <a href="." title="Implementation considerations" class="md-nav__link md-nav__link--active">
+      Implementation considerations
     </a>
     
       
@@ -283,40 +283,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#how-to-build-and-run" title="How to build and run" class="md-nav__link">
-    How to build and run
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
-    Pre-requisites
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build" title="Build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run" title="Run" class="md-nav__link">
-    Run
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
       
       
       
@@ -325,6 +291,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="build-run/" title="Build and run locally" class="md-nav__link">
+      Build and run locally
+    </a>
   </li>
 
     
@@ -358,8 +336,8 @@
 
 
   <li class="md-nav__item">
-    <a href="deployments/" title="Deployments" class="md-nav__link">
-      Deployments
+    <a href="deployments/" title="Kubernetes Deployments" class="md-nav__link">
+      Kubernetes Deployments
     </a>
   </li>
 
@@ -398,40 +376,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#how-to-build-and-run" title="How to build and run" class="md-nav__link">
-    How to build and run
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
-    Pre-requisites
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build" title="Build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#run" title="Run" class="md-nav__link">
-    Run
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
       
       
       
@@ -451,8 +395,11 @@
                   <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="k-container-shipment-order-management-service">K Container Shipment Order Management Service</h1>
-<p>This project is demonstrating, one of the possible implementation of the Command Query Responsibility Segregation and event sourcing patterns applied to container shipment management service. It is part of the <a href="https://ibm-cloud-architecture.github.io/refarch-eda">Event Driven Architecture</a> reference architecture. From a use case point of view, it implements the order management component, responsible to manage the full life cycle of an order issued by a manufacturer who want to ship fresh goods overseas. The business process is defined <a href="https://ibm-cloud-architecture.github.io/refarch-kc/introduction/">here</a>.</p>
+                <h1 id="reefer-container-shipment-order-management-service">Reefer Container Shipment Order Management Service</h1>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>This project is demonstrating, one of the possible implementation of the Command Query Responsibility Segregation and event sourcing patterns applied to container shipment order management service. It is part of the Event Driven Architecture <a href="https://ibm-cloud-architecture.github.io/refarch-kc">solution implementation</a> reference architecture. From a use case point of view, it implements the order management component, responsible to manage the full life cycle of a shipment order issued by a manufacturer who want to ship fresh goods overseas. The business process is defined <a href="https://ibm-cloud-architecture.github.io/refarch-kc/introduction/">here</a>.</p>
+</div>
 <p>One of the business requirements for adopting event sourcing and CQRS patterns is to be able to get visibility to the history of orders and track the good shipment progress over time. This would include the ability to determine: </p>
 <ol>
 <li>How frequently does an order get cancelled after it is placed but before an empty container is delivered to pick up location or loaded ?</li>
@@ -463,26 +410,25 @@
 </ol>
 <p>To answer those questions we need to keep historical information of each orders and its events. Event sourcing is to pattern of choice for that. </p>
 <p>We are detailing how to go from event storming to implementation in a <a href="ddd-applied/">separate note</a> by apply the domain-driven design approach.</p>
-<p>first question we need events like OrderPlaced(orderId), OrderCancelled(orderID) and a read model with OrdersStatuses(orderId, status, timestamp); OrderStatusTransition(orderId, oldStatus, new Status timestamp) and then OrdersCancelledAfterPlaced(orderId, timestamp). We will detail how to implement those functions in later section.</p>
 <h2 id="implementation-approach">Implementation approach</h2>
-<p>As introduced in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc/design/readme/">high level design note</a> the order life cycle looks like in the following diagram:</p>
+<p>As introduced in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc/design/readme/">high level design note</a> the order entity life cycle looks like in the following diagram:</p>
 <p><img alt="" src="order-life-cycle.png" /></p>
-<p>The order microservice supports the implementations of this life cycle, using event sourcing and CQRS.</p>
-<p>With <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#command-query-responsibility-segregation-cqrs-pattern">CQRS</a> we will separate the 'write model' from the read. The Command microservice implements the write model and exposes a set of REST end points for Creating Order, Updating Order and getting Order per ID. The query service will address complex queries to support adhoc business requirements and joining data between different entities like the order, the containers and the voyages. So we have two Java project to support each service implementation. Each service is packaged as container and deployable to Kubernetes. </p>
+<p>The order microservice supports the implementations of this life cycle, using event sourcing and CQRS patter.</p>
+<p>With <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#command-query-responsibility-segregation-cqrs-pattern">CQRS</a> we separate the 'write model' from the read. The Command microservice implements the write model and exposes a set of REST end points for Creating Order, Updating Order and getting Order per ID. The query service will address complex queries to support adhoc business requirements and joining data between different entities like the order, the containers and the voyages. So we have two Java projects to support each service implementation. Each service is packaged as container and deployable to Kubernetes. </p>
 <ul>
 <li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/tree/master/order-command-ms">Order command microservice</a></li>
 <li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/tree/master/order-query-ms">Order query microservice</a></li>
 </ul>
-<p>As some requirements are related to historical query, using an event approach we need to keep event on what happens to the order. Instead of implementing a complex logic with the query and command services the event sourcing is supported by using Kafka topics. The following diagram illustrates the CQRS and event sourcing applied to the order management service. Client to the REST api, like a back end for front end app, performs a HTTP POST operation with the order data. The command generates event and persist order on its own data source. The query part is a consumer of event and build its own projections to support the different queries:</p>
+<p>As some requirements are related to historical query, using an event approach we need to keep all the events related to what happens to the order. Instead of implementing a complex logic with the query and command services the event sourcing is supported by using Kafka topics. The following diagram illustrates the CQRS and event sourcing applied to the order management service. Client to the REST api, like a back end for front end app, performs a HTTP POST operation with the order data. The command generates events and persists order on its own data source. The query part is an event consumer and defines its own data projections to support the different queries:</p>
 <p><img alt="" src="order-ms-cqrs-es.png" /> </p>
 <p>The datasource at the command level, may not be necessary, but we want to illustrate here the fact that it is possible to have a SQL based database or a document oriented database to keep the order last state: a call to get /orders/{id} will return the current order state. </p>
-<p>For the query part the projection can be kept in memory, depending of the amount of data to gather, and the view can be built by re-reading the event store. </p>
+<p>For the query part the projection can be kept in memory or persisted on its own data store. The decision to go for in memory ro database depends upon the amount of data to join, and the time horizon set at the Kafka topic level. A service may always rebuild its view by re-reading the topic from the beginning. </p>
 <p>An alternate solution is to have the BFF pushing events to the event source and then having the order service consuming event to persist them, as illustrated in the following diagram:</p>
 <p><img alt="" src="bff-es-cqrs.png" /></p>
-<p>As the BFF still needs to get order by ID or perform complex query it has to access the order service using HTTP, we could image the BFF developers prefer to use one communication protocol and adding kafka producer was not their cup of tea.  </p>
+<p>As the BFF still needs to get order by ID or perform complex query it has to access the order service using HTTP, we could imagine the BFF developers prefer to use one communication protocol and adding kafka producer was not their cup of tea.  </p>
 <p>The following sequence diagram illustrates the relationships between the components.</p>
 <p><img alt="" src="order-cmd-query-flow.png" /></p>
-<p>To avoid transaction between the database update and the event publisher, the choice is to publish the event as soon as it is received and use a consumer inside the command service to load the data and save to the database. This is illustrated in <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#the-consistency-challenge">this article.</a></p>
+<p>To avoid transaction between the database update and the event published, the choice is to publish the event as soon as it is received and use a consumer inside the command service to load the data and save to the database. The kafka topic act as a source of trust for this service. This is illustrated in <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#the-consistency-challenge">this article.</a></p>
 <p>The /order POST REST end point source code is <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java#L51-L74">here</a></p>
 <p>and the <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderAdminService.java#L35">order events consumer</a> in the command pattern.</p>
 <p>See the class <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java">OrderCRUDService.java</a>.
@@ -493,104 +439,62 @@
 <p>By applying a domain-driven design we can identify aggregates, entities, value objects and domain events. Those elements help us to be our information model as classes. For any event-driven microservice you need to assess what data to carry in the event and what persist in the potential data source. 
 The following diagram illustrates the different data models in the context of this order microservice:</p>
 <p><img alt="" src="order-evt-data.png" /></p>
-<p>The Order entered in the User interface is defined like:</p>
-<pre><code> class Address {
-    street: string;
-    city: string;
-    country: string;
-    state: string;
-    zipcode: string;
-}
+<p>The Order entered in the User interface is defined like:
+<div class="codehilite"><pre><span></span> <span class="nt">class</span> <span class="nt">Address</span> <span class="p">{</span>
+    <span class="n">street</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">city</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">country</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">zipcode</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+<span class="p">}</span>
 
- class Order {
-    orderID: string;
-    customerID: string;
-    pickupAddress: Address;
-    destinationAddress: Address;
-    productID: string;
-    quantity: string;
-    expectedDeliveryDate: string;   //  date as ISO format
-}
-</code></pre>
-
+ <span class="nt">class</span> <span class="nt">Order</span> <span class="p">{</span>
+    <span class="n">orderID</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">customerID</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">pickupAddress</span><span class="p">:</span> <span class="n">Address</span><span class="p">;</span>
+    <span class="n">destinationAddress</span><span class="p">:</span> <span class="n">Address</span><span class="p">;</span>
+    <span class="n">productID</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">quantity</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
+    <span class="n">expectedDeliveryDate</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>   <span class="err">//</span>  <span class="err">date</span> <span class="err">as</span> <span class="err">ISO</span> <span class="err">format</span>
+<span class="p">}</span>
+</pre></div></p>
 <p>The information to persist in the database may be used to do analytics, and get the last status of order. It may look use relational database and may have information like:</p>
-<pre><code> class Address {
-    street: string;
-    city: string;
-    country: string;
-    state: string;
-    zipcode: string;
-}
+<div class="codehilite"><pre><span></span> <span class="kr">class</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="nx">street</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">city</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">country</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">state</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">zipcode</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
 
- class Order {
-    orderID: string;
-    customerID: string;
-    pickupAddress: Address;
-    destinationAddress: Address;
-    productID: string;
-    quantity: string;
-    expectedDeliveryDate: string;   //  date as ISO format
-    pickupDate: string;   //  date as ISO format
-}
+ <span class="kr">class</span> <span class="nx">Order</span> <span class="p">{</span>
+    <span class="nx">orderID</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">customerID</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">pickupAddress</span>: <span class="kt">Address</span><span class="p">;</span>
+    <span class="nx">destinationAddress</span>: <span class="kt">Address</span><span class="p">;</span>
+    <span class="nx">productID</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">quantity</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">expectedDeliveryDate</span>: <span class="kt">string</span><span class="p">;</span>   <span class="c1">//  date as ISO format</span>
+    <span class="nx">pickupDate</span>: <span class="kt">string</span><span class="p">;</span>   <span class="c1">//  date as ISO format</span>
+<span class="p">}</span>
 
-class OrderContainers {
-    orderID: string;
-    containerID: string[];
-}
-</code></pre>
+<span class="kr">class</span> <span class="nx">OrderContainers</span> <span class="p">{</span>
+    <span class="nx">orderID</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">containerID</span>: <span class="kt">string</span><span class="p">[];</span>
+<span class="p">}</span>
+</pre></div>
 
-<p>On the event side we may generate OrderCreated, OrderCancelled,... But what is in the event payload? We can propose the following structure where type will help to specify the event type and getting a generic payload we can have anything in it.</p>
-<pre><code>class OrderEvent {
-    orderId: string;
-    timestamp: string;   //  date as ISO format
-    payload: any;
-    type: string;
-    version: string;
-}
-</code></pre>
-
+<p>On the event side we may generate OrderCreated, OrderCancelled,... But what is in the event payload? We can propose the following structure where type will help to specify the event type and getting a generic payload we can have anything in it.
+<div class="codehilite"><pre><span></span><span class="kr">class</span> <span class="nx">OrderEvent</span> <span class="p">{</span>
+    <span class="nx">orderId</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">timestamp</span>: <span class="kt">string</span><span class="p">;</span>   <span class="c1">//  date as ISO format</span>
+    <span class="nx">payload</span>: <span class="kt">any</span><span class="p">;</span>
+    <span class="nx">type</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">version</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></p>
 <p>Also do we need to ensure consistency between those data views? Where is the source of truth? </p>
 <p>In traditional SOA service with application maintaining all the tables and beans to support all the business requirements, ACID transactions support the consistency and integrity of the data, and the database is one source of truth. With microservices responsible to manage its own business entity, clearly separated from other business entities, data eventual consistency is the standard. If you want to read more about the Event Sourcing and CQRS patterns <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns">see this article.</a></p>
-<h2 id="how-to-build-and-run">How to build and run</h2>
-<h3 id="pre-requisites">Pre-requisites</h3>
-<p>You can have the following installed on your computer or use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/scripts/docker-java-tools">our docker image</a> to get those dependencies integrated in a docker image and you can use to build, test and package the java programs.
-<em> <a href="https://maven.apache.org/install.html">Maven</a>
-</em> Java 8: Any compliant JVM should work.
-  * <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java 8 JDK from Oracle</a>
-  * <a href="http://www.ibm.com/developerworks/java/jdk/">Java 8 JDK from IBM (AIX, Linux, z/OS, IBM i)</a>,
-    or <a href="https://developer.ibm.com/assets/wasdev/#filter/assetTypeFilters=PRODUCT">Download a Liberty server package</a>
-    that contains the IBM JDK (Windows, Linux)</p>
-<h3 id="build">Build</h3>
-<p>Each microservice has a build script to perform the maven package and build the docker image. See <code>scripts</code> folder.</p>
-<ul>
-<li>For order-command-ms
- <code>./scripts/buildDocker.sh</code></li>
-<li>For order-query-ms
- <code>./scripts/buildDocker.sh</code></li>
-</ul>
-<p>To build without docker image:</p>
-<ul>
-<li><code>mvn install</code> or <code>mvn install  -DskipITs</code> to bypass integration tests, as they need kafka and a running Liberty server</li>
-</ul>
-<h3 id="run">Run</h3>
-<p>You can start the Liberty server locally with</p>
-<ul>
-<li><code>mvn liberty:run-server</code>  to start the server with the deployed wars.</li>
-</ul>
-<p>Or run the complete solution locally using <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/kc-solution-compose.yml">docker compose</a> from the <a href="https://github.com/ibm-cloud-architecture/refarch-kc">refarck-kc</a> project to start a local kafka broker and all the components:</p>
-<p>One time execution of the kafka broker: </p>
-<pre><code class="shell">cd refarch-kc/docker
-docker-compose -f backbone-compose.yml up
-</code></pre>
-
-<p>Start the solution</p>
-<pre><code class="shell">docker-compose -f bkc-solution-compose.yml up
-</code></pre>
-
-<p>And stop everything:</p>
-<pre><code>docker-compose -f kc-solution-compose.yml down
-docker-compose -f backbone-compose.yml down
-</code></pre>
                 
                   
                 
@@ -626,13 +530,13 @@ docker-compose -f backbone-compose.yml down
           </a>
         
         
-          <a href="deployments/" title="Deployments" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="build-run/" title="Build and run locally" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Deployments
+                Build and run locally
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
