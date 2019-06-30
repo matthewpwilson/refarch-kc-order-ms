@@ -318,20 +318,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deploy-locally-on-minikube" title="Deploy locally on Minikube" class="md-nav__link">
-    Deploy locally on Minikube
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-locally-using-docker-compose" title="Deploy locally using docker-compose" class="md-nav__link">
-    Deploy locally using docker-compose
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#deploy-to-iks" title="Deploy to IKS" class="md-nav__link">
     Deploy to IKS
   </a>
@@ -356,6 +342,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-kc/itg-tests/" title="Integration tests" class="md-nav__link">
+      Integration tests
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -375,20 +373,6 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-locally-on-minikube" title="Deploy locally on Minikube" class="md-nav__link">
-    Deploy locally on Minikube
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-locally-using-docker-compose" title="Deploy locally using docker-compose" class="md-nav__link">
-    Deploy locally using docker-compose
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#deploy-to-iks" title="Deploy to IKS" class="md-nav__link">
@@ -425,15 +409,91 @@
                 
                 <h1 id="deployments">Deployments</h1>
 <p>Be sure to have read the <a href="../build-run/">build and run article before</a>.</p>
-<h2 id="deploy-locally-on-minikube">Deploy locally on Minikube</h2>
-<h2 id="deploy-locally-using-docker-compose">Deploy locally using docker-compose</h2>
-<p>The approach is simple, compile, build the war file, build the docker image and run docker compose for the backend solution.</p>
-<p>To start the solution go to the <code>refarch-kc/docker</code> folder</p>
-<div class="codehilite"><pre><span></span>source ../scripts/setenv.sh LOCAL
-docker-compose -f kc-solution-compose.yml up
+<h2 id="deploy-to-iks">Deploy to IKS</h2>
+<p>Be sure to have <a href="https://ibm-cloud-architecture.github.io/refarch-kc/analysis/readme/">read and done the steps</a> to prepare the IBM Cloud services and get a kubernetes cluster up and running. </p>
+<p>Once the two docker images are built, upload them to the IKS private registry</p>
+<div class="codehilite"><pre><span></span>docker push us.icr.io/ibmcaseeda/kc-orderqueryms
+docker push us.icr.io/ibmcaseeda/kc-ordercmdms
 </pre></div>
 
-<h2 id="deploy-to-iks">Deploy to IKS</h2>
+<ul>
+<li>Verify the images are in you private repo:</li>
+</ul>
+<div class="codehilite"><pre><span></span>ibmcloud cr image-list
+</pre></div>
+
+<ul>
+<li>Deploy the helm charts for each service using the <code>scripts/deployHelm</code> under each project.</li>
+</ul>
+<div class="codehilite"><pre><span></span>cd order-command-ms
+./scripts/deployHelm MINIKUBE
+
+cd order-query-ms
+./scripts/deployHelm MINIKUBE
+</pre></div>
+
+<ul>
+<li>Verify the deployments and pods:  </li>
+</ul>
+<div class="codehilite"><pre><span></span>kubectl get deployments -n browncompute
+</pre></div>
+
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>NAME</th>
+<th>DESIRED</th>
+<th>CURRENT</th>
+<th>UP-TO-DATE</th>
+<th>AVAILABLE</th>
+<th>AGE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fleetms-deployment</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>23h</td>
+</tr>
+<tr>
+<td>kc-ui</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>18h</td>
+</tr>
+<tr>
+<td>ordercommandms-deployment</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1d</td>
+</tr>
+<tr>
+<td>orderqueryms-deployment</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>23h</td>
+</tr>
+<tr>
+<td>voyagesms-deployment</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>19h</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
 <h2 id="deploy-to-icp">Deploy to ICP</h2>
                 
                   

@@ -265,6 +265,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#order-aggregate" title="Order aggregate" class="md-nav__link">
+    Order aggregate
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-policies-and-events" title="Command - Policies and Events" class="md-nav__link">
+    Command - Policies and Events
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#user-stories" title="User stories" class="md-nav__link">
     User stories
   </a>
@@ -342,6 +356,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-kc/itg-tests/" title="Integration tests" class="md-nav__link">
+      Integration tests
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -365,6 +391,20 @@
         <li class="md-nav__item">
   <a href="#bounded-contexts" title="Bounded Contexts" class="md-nav__link">
     Bounded Contexts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-aggregate" title="Order aggregate" class="md-nav__link">
+    Order aggregate
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-policies-and-events" title="Command - Policies and Events" class="md-nav__link">
+    Command - Policies and Events
   </a>
   
 </li>
@@ -398,31 +438,44 @@
                 <h1 id="domain-driven-design-applied-to-order-context">Domain-driven design applied to order context</h1>
 <p>During the event storming analysis, we define the domain to be the container shipment domain. It groups a set of subdomains like orders, contract, shipping, and external systems as the voyage scheduling and the container inventory management:</p>
 <p><img alt="" src="../domain-subdomains.png" /></p>
-<p>Notice that at this time just three physical systems exist. The grouping of the orders, contract and shipping in one boundary context was an analysis shortcut as we want to clearly separate them as the owner ship and ubiquituous language are differents. We have three subdomain and all can be considered core domains. They are competitive advantages and directly impact the organization business.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice that at this time just three physical systems exist. The grouping of the orders, contract and shipping sub domain in one boundary context may be considered as an analysis shortcut as we want to clearly separate those subdomain as the ownership and the ubiquituous language are differents. </p>
+</div>
+<p>We have three subdomain and all can be considered core domains. They represent company's competitive advantages and directly impact the organization business.</p>
 <p><img alt="" src="../domain-subdomains-2.png" /></p>
-<p>The order subdomain interacts with the contract subdomain via acceptance of the contract conditions from the customer and by build a contract from the created order. </p>
-<p>When the contract is accepted, the order needs to be shipped, but to do so the shipping subdomain needs to interact with the voyage subsystem to get the available voyage from the closed harbor from the pickup destination, to a target harbor to the shipping destination. It also needs to interact with the container inventory service to get a matching container. </p>
+<p>The order subdomain interacts with the contract subdomain via the acceptance of the contract conditions from the customer (e.g. manufacturer) and by building a contract from the created shipment order. </p>
+<p>When the contract is accepted, the order needs to be shipped, but to do so the shipping subdomain needs to interact with the voyage subsystem to get the available vessel voyages. Voyage is an entity grouping the information about the source harbor close to the pickup destination, to a target harbor the closest to the shipping destination. Finally, the shipping subdomain needs to interact with the container inventory service to get matching Reefer containers, present at the source harbor. </p>
 <h2 id="bounded-contexts">Bounded Contexts</h2>
-<p>Within a business context every use of a given domain term, phrase, or sentence, <strong>the Ubiquitous Language</strong> inside the boundary has a specific contextual meaning. So order context is a boundary context and addresses order, ordered product type, pickup and shipping addresses. The business problem to address is how to make order traceability more efficient so customers have a clear view of their orders.</p>
+<p>Within a business context every use of a given domain term, phrase, or sentence, <strong>the Ubiquitous Language</strong> inside the boundary has a specific contextual meaning. So order context is a boundary context and groups order, ordered product type, pickup and shipping addresses. The business problem to address is, how to make order traceability more efficient so customers have a clear view of their orders.</p>
 <p>An order will be assigned to one or many containers and containers are assigned to a voyage.</p>
+<h2 id="order-aggregate">Order aggregate</h2>
+<p>In Domain-driven design, an aggregate groups related object as a unique entity. One object is the aggregate root. It ensures the integrity of the whole. Here the root is the Order. The product to ship is part of the aggregate. The Order is what we will persist in one unique transaction. </p>
+<h2 id="command-policies-and-events">Command - Policies and Events</h2>
+<p>When adding commands and business policies to the discovered events, we were able to isolate the following command and events for the order context.</p>
+<p><img alt="" src="../order-evt-cmd.png" /></p>
+<p>From the command we can design our first APIs interface:</p>
+<ul>
+<li>Order createOrder(orderDTO)</li>
+<li>Order updateOrder(order)</li>
+<li>Order getOrders(manufacturerName)</li>
+</ul>
 <h2 id="user-stories">User stories</h2>
 <p>The business requirements is presented in <a href="https://ibm-cloud-architecture.github.io/refarch-kc/analysis/readme/">this note</a></p>
-<p>The following user stories are done in this project:</p>
+<p>The following user stories are implemented in this project:</p>
 <ul>
-<li>[ ] As a manufacturer manager I want to enter container shipment order information like product reference, quantity,  pickup from address, earliest pickup date, shipment to address,  shipment by date, and required temperature in transit range so the shipping company can give me back an order confirmation ( including the orderID), expected pickup and delivery dates, the assigned voyage and ship name<blockquote>
-<p>As the microservice will not have a dedicated UI, we are using the demonstration UI to define forms to gather the data. So this user story is implemented in the kc-ui project, and in this microservice we need to offer the create and update operations and get by order ID</p>
-</blockquote>
-</li>
-<li>[ ] As a manufacturer manager I want to read the status of an order given its order id and receive a report with the full event history of related order, voyage ship and container events. <blockquote>
-<p>The order id is generated by the order create operation, and is immutable. An order is assigned to a voyage at the time it is created.</p>
-</blockquote>
-</li>
-<li>[ ] As a shipment company manager I want to update the status of an order, and add voyage, container and ship information once I know them, also possible modify pickup date and expected delivery date.</li>
-<li>[ ] As a shipment manager I want to be able to assign a shipment request from a customer to a specific voyage in order to create a confirmed order. The selected voyage must be from a source port near the pickup location travelling to a destination port near the delivery location requested by the customer.  It must be within the time window specified by the customer in the order request.  The selected voyage must have free space available ( capacity not previously assigned to other orders) to accomodate the number of containers specified by the customer in their shipment request.  <blockquote>
-<p>Same as above, the UI is in kc-ui project, so here is a model and the update operation.</p>
-</blockquote>
-</li>
+<li>[ ] As a shipping company manager, I want to get the current newly created order list so that I can create contract manually.</li>
+<li>[ ] As a shipping company manager, I want to get a specific order list knowing its unique identifier so that I can review the data and know the current status.</li>
+<li>[ ] As a shipping company manager, I want to update the status of an order</li>
+<li>[ ] As a shipping company manager, I want select one of the proposed voyages, so that I can optimize the vessel allocation, and satisfy the customer.</li>
+<li>[ ] As a shipping company manager, I want to review the containers allocated to the order because I'm curious</li>
+<li>[ ] As a shipping company manager, I want to modify pickup date and expected delivery date to adapt to customer last request</li>
 </ul>
+<p>The selected voyage must be from a source port near the pickup location travelling to a destination port near the delivery location requested by the customer.  It must be within the time window specified by the customer in the order request.  The selected voyage must have free space available (capacity not previously assigned to other orders) to accomodate the number of containers specified by the customer in their shipment request. From a design point of view we can imagine there is an automatic system being able to perform this assignment. This is implemented in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc-ms">Voyage microservice</a></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All the end user interactions are done in the user interface, in a separate project, but the order microservice supports the backend operations.</p>
+</div>
                 
                   
                 

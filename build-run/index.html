@@ -96,7 +96,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#build-and-run-the-solution-locally" tabindex="1" class="md-skip">
+      <a href="#build-and-run-the-order-microsercives-locally" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -369,6 +369,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-kc/itg-tests/" title="Integration tests" class="md-nav__link">
+      Integration tests
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -449,18 +461,17 @@
                   <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/edit/master/docs/build-run.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="build-and-run-the-solution-locally">Build and run the solution locally</h1>
-<p>You have different deployment models: local with docker-compose, minikube, kubernetes on IBM Cloud (IKS), or IBM Cloud private.</p>
-<p>Each script accepts an argument:</p>
+                <h1 id="build-and-run-the-order-microsercives-locally">Build and run the order microsercives locally</h1>
+<p>We support different deployment models: local with docker-compose, local with minikube, and remote using kubernetes on IBM Cloud (IKS), or on IBM Cloud private. To build and run we are proposing some scripts. Each script accepts an argument:</p>
 <ul>
 <li>LOCAL (default is argument is omitted)</li>
 <li>MINIKUBE</li>
 <li>IBM_CLOUD</li>
 <li>ICP</li>
 </ul>
-<p>This variable is really used in a set environment script under the <code>refarch-kc</code> project and the <code>scripts</code> folder, as it defines different values for the target environment.</p>
+<p>This argument is really used to set environment variables used in the code in a separate script under the <code>refarch-kc</code> project and the <code>scripts</code> folder.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
-<p>You can have the following software already installed on your computer or use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/docker-java-tools">our docker image</a> to get those dependencies integrated in a docker image, which you can use to build, test and package the java programs.</p>
+<p>You can have the following software already installed on your computer or use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/docker-java-tools">our docker images</a> to get those dependencies integrated in docker images, which you can use to build, test and package the java programs.</p>
 <ul>
 <li><a href="https://maven.apache.org/install.html">Maven</a></li>
 <li>Java 8: Any compliant JVM should work.</li>
@@ -470,8 +481,8 @@
     that contains the IBM JDK (Windows, Linux)</li>
 </ul>
 <h2 id="build">Build</h2>
-<p>You need to build each microservices independently using maven</p>
-<p>Each microservice has its build script to perform the maven package and build the docker image. See <code>scripts</code> folder under each project.</p>
+<p>You need to build each microservices independently using maven.</p>
+<p>Each microservice has its ownbuild script to perform the maven package and build the docker image. See <code>scripts</code> folder under each project.</p>
 <ul>
 <li>For order-command-ms</li>
 </ul>
@@ -485,7 +496,7 @@
 </pre></div></li>
 </ul>
 <div class="admonition note">
-<p class="admonition-title">Note<p>The build scripts test if the javatool docker image exist and they use it, if it found. If not they use maven.
+<p class="admonition-title">Note<p>The build scripts test if the javatool docker image exists and they use it, if found, otherwie they use maven.
 If you want to use docker compose use LOCAL as parameter.</p>
 </p>
 </div>
@@ -499,16 +510,23 @@ ibmcase/kc-ordercommandms latest
 </pre></div>
 
 <h2 id="run">Run</h2>
+<p>You can always use the maven command to compile and run liberty server for each project.
+<div class="codehilite"><pre><span></span>mvn install
+mvn liberty:run-server
+</pre></div></p>
+<p>But as soon as you need to run integration tests with kafka you need all services up and running.</p>
 <h3 id="on-minikube">On Minikube</h3>
 <p>For the order command microservice:</p>
-<p><div class="codehilite"><pre><span></span>cd order-command-ms
+<div class="codehilite"><pre><span></span>cd order-command-ms
 
 helm install chart/ordercommandms/ --name ordercmd --set image.repository=ibmcase/kc-ordercommandms --set image.pullSecret= --set image.pullPolicy=Never --set eventstreams.brokers=kafkabitmani:9092 --set eventstreams.env=MINIKUBE --namespace greencompute
 </pre></div>
-or use the command: <code>./scripts/deployHelm MINIKUBE</code></p>
+
+<p>or use the command: <code>./scripts/deployHelm MINIKUBE</code></p>
 <p>Without any previously tests done, the call below should return an empty array: <code>[]</code>
 <div class="codehilite"><pre><span></span>curl http://localhost:31200/orders
 </pre></div></p>
+<p>We will present some integration tests in a section below.</p>
 <h3 id="with-docker-compose">With docker compose</h3>
 <p>To run the complete solution locally we use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/kc-solution-compose.yml">docker compose</a> from the root project.</p>
 <p>And to stop everything:</p>
