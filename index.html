@@ -121,7 +121,7 @@
               Order Microservice CQRS and Event Sourcing
             </span>
             <span class="md-header-nav__topic">
-              Implementation considerations
+              Reefer Container Shipment Order Management Service
             </span>
           
         </div>
@@ -231,8 +231,8 @@
 
 
   <li class="md-nav__item">
-    <a href="ddd-applied/" title="From analysis to implementation" class="md-nav__link">
-      From analysis to implementation
+    <a href="ddd-applied/" title="Order subdomain - analysis and design" class="md-nav__link">
+      Order subdomain - analysis and design
     </a>
   </li>
 
@@ -241,56 +241,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Implementation considerations
-      </label>
-    
-    <a href="." title="Implementation considerations" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="index.md#implementation-considerations" title="Implementation considerations" class="md-nav__link">
       Implementation considerations
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-approach" title="Implementation approach" class="md-nav__link">
-    Implementation approach
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-and-event-model" title="Data and Event Model" class="md-nav__link">
-    Data and Event Model
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -300,8 +255,8 @@
 
 
   <li class="md-nav__item">
-    <a href="build-run/" title="Build and run locally" class="md-nav__link">
-      Build and run locally
+    <a href="build-run/" title="Build and run" class="md-nav__link">
+      Build and run
     </a>
   </li>
 
@@ -312,7 +267,7 @@
 
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#event-sourcing" title="Event sourcing pattern" class="md-nav__link">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/event-sourcing" title="Event sourcing pattern" class="md-nav__link">
       Event sourcing pattern
     </a>
   </li>
@@ -324,7 +279,7 @@
 
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#command-query-responsibility-segregation-cqrs-pattern.md" title="CQRS pattern" class="md-nav__link">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs" title="CQRS pattern" class="md-nav__link">
       CQRS pattern
     </a>
   </li>
@@ -375,8 +330,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#implementation-approach" title="Implementation approach" class="md-nav__link">
-    Implementation approach
+  <a href="#applying-domain-driven-design" title="Applying Domain Driven Design" class="md-nav__link">
+    Applying Domain Driven Design
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-considerations" title="Implementation considerations" class="md-nav__link">
+    Implementation considerations
   </a>
   
 </li>
@@ -410,19 +372,28 @@
                 <h1 id="reefer-container-shipment-order-management-service">Reefer Container Shipment Order Management Service</h1>
 <div class="admonition abstract">
 <p class="admonition-title">Abstract</p>
-<p>This project is demonstrating, one of the possible implementation of the Command Query Responsibility Segregation and event sourcing patterns applied to container shipment order management service. It is part of the Event Driven Architecture <a href="https://ibm-cloud-architecture.github.io/refarch-kc">solution implementation</a> reference architecture. From a use case point of view, it implements the order management component, responsible to manage the full life cycle of a shipment order issued by a manufacturer who want to ship fresh goods overseas. The business process is defined <a href="https://ibm-cloud-architecture.github.io/refarch-kc/introduction/">here</a>.</p>
+<p>This project is demonstrating, one of the possible implementation of the Command Query Responsibility Segregation and event sourcing patterns applied to Reefer shipment order subdomain. It is part of the Event Driven Architecture <a href="https://ibm-cloud-architecture.github.io/refarch-kc">solution implementation</a>. From a use case point of view, it implements the order management component, responsible to manage the full life cycle of a shipment order issued by a manufacturer who wants to ship fresh goods overseas. The business process is defined <a href="https://ibm-cloud-architecture.github.io/refarch-kc/introduction/">here</a>. We are also presenting one way of applying Domain Drive Design practice for this subdomain.</p>
 </div>
-<p>One of the business requirements for adopting event sourcing and CQRS patterns is to be able to get visibility to the history of orders and track the good shipment progress over time. This would include the ability to determine: </p>
-<ol>
+<p>The key business requirements we need to support are:</p>
+<ul>
+<li>Be able to book a fresh product shipment order, including the allocation of the voyage and the reefer container to the expected cargo.</li>
+<li>Be able to understand what happen to the order over time: <ul>
 <li>How frequently does an order get cancelled after it is placed but before an empty container is delivered to pick up location or loaded ?</li>
+<li>Track key issue or step in the reefer shipment process</li>
 <li>How often does an order get cancelled after the order is confirmed, a container assigned and goods loaded into it?</li>
+</ul>
+</li>
+<li>Be able to support adhoc query on the order that span across subdomains of the shipment domain. <ul>
 <li>What are all events for a particular order and associated container shipment?  </li>
 <li>Has the cold chain been protected on this particular order?</li>
-<li>How long it takes to deliver a container to pick up location?</li>
-</ol>
-<p>To answer those questions we need to keep historical information of each orders and its events. Event sourcing is to pattern of choice for that. </p>
+<li>How long it takes to deliver a fresh food order from california to China?</li>
+</ul>
+</li>
+</ul>
+<p>Those requirements force use to consider event sourcing (understanding facts about the order over time) and CQRS patterns to separate queries from command so our architecture will be more flexible and may address different sclaing requirements.  </p>
+<h2 id="applying-domain-driven-design">Applying Domain Driven Design</h2>
 <p>We are detailing, in a <a href="ddd-applied/">separate note</a>, how to go from the event storming produced elements to the microservice implementation by applying the domain-driven design approach.</p>
-<h2 id="implementation-approach">Implementation approach</h2>
+<h2 id="implementation-considerations">Implementation considerations</h2>
 <p>As introduced in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc/design/readme/">solution high level design note</a> the order entity life cycle looks like in the following diagram:</p>
 <p><img alt="" src="order-life-cycle.png" /></p>
 <p>The order microservice supports the implementations of this life cycle, using event sourcing and CQRS pattern.</p>
@@ -533,41 +504,6 @@ The following diagram illustrates the different data models in the context of th
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href="ddd-applied/" title="From analysis to implementation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                From analysis to implementation
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="build-run/" title="Build and run locally" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Build and run locally
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
