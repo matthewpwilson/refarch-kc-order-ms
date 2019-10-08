@@ -229,6 +229,39 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href=".." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      From event storming to CQRS microservice
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        From event storming to CQRS microservice
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
   
 
 
@@ -325,16 +358,21 @@
     
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-kc-order-ms/#implementation-considerations" title="Implementation considerations" class="md-nav__link">
+    <a href="../implementation-considerations/" title="Implementation considerations" class="md-nav__link">
       Implementation considerations
     </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -343,10 +381,46 @@
       
 
 
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Development practices
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Development practices
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
   <li class="md-nav__item">
-    <a href="../build-run/" title="Build and run" class="md-nav__link">
-      Build and run
+    <a href="../build-run/" title="Build and run locally" class="md-nav__link">
+      Build and run locally
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../deployments/" title="Deploy to Kubernetes cluster" class="md-nav__link">
+      Deploy to Kubernetes cluster
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -370,18 +444,6 @@
   <li class="md-nav__item">
     <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs" title="CQRS pattern" class="md-nav__link">
       CQRS pattern
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../deployments/" title="Kubernetes Deployments" class="md-nav__link">
-      Kubernetes Deployments
     </a>
   </li>
 
@@ -609,14 +671,28 @@ With this approach orders-query-ms becomes a CQRS query service with internal st
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href=".." title="Introduction" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Introduction
+              </span>
+            </div>
+          </a>
         
-          <a href="../build-run/" title="Build and run" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../implementation-considerations/" title="Implementation considerations" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Build and run
+                Implementation considerations
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

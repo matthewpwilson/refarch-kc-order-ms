@@ -36,7 +36,7 @@
     
     
       
-        <title>Kubernetes Deployments - Order Microservice CQRS and Event Sourcing</title>
+        <title>Deploy to Kubernetes cluster - Order Microservice CQRS and Event Sourcing</title>
       
     
     
@@ -121,7 +121,7 @@
               Order Microservice CQRS and Event Sourcing
             </span>
             <span class="md-header-nav__topic">
-              Kubernetes Deployments
+              Deploy to Kubernetes cluster
             </span>
           
         </div>
@@ -231,33 +231,57 @@
 
 
   <li class="md-nav__item">
+    <a href=".." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      From event storming to CQRS microservice
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        From event storming to CQRS microservice
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../ddd-applied/" title="Order subdomain - analysis and design" class="md-nav__link">
       Order subdomain - analysis and design
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-kc-order-ms/#implementation-considerations" title="Implementation considerations" class="md-nav__link">
+    <a href="../implementation-considerations/" title="Implementation considerations" class="md-nav__link">
       Implementation considerations
     </a>
   </li>
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../build-run/" title="Build and run" class="md-nav__link">
-      Build and run
-    </a>
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -265,29 +289,38 @@
       
       
 
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Development practices
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Development practices
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/event-sourcing" title="Event sourcing pattern" class="md-nav__link">
-      Event sourcing pattern
+    <a href="../build-run/" title="Build and run locally" class="md-nav__link">
+      Build and run locally
     </a>
   </li>
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs" title="CQRS pattern" class="md-nav__link">
-      CQRS pattern
-    </a>
-  </li>
-
-    
-      
-      
-      
+        
+          
+          
+          
 
   
 
@@ -300,11 +333,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Kubernetes Deployments
+        Deploy to Kubernetes cluster
       </label>
     
-    <a href="./" title="Kubernetes Deployments" class="md-nav__link md-nav__link--active">
-      Kubernetes Deployments
+    <a href="./" title="Deploy to Kubernetes cluster" class="md-nav__link md-nav__link--active">
+      Deploy to Kubernetes cluster
     </a>
     
       
@@ -327,13 +360,6 @@
         <li class="md-nav__item">
   <a href="#deploy-to-iks" title="Deploy to IKS" class="md-nav__link">
     Deploy to IKS
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-to-icp" title="Deploy to ICP" class="md-nav__link">
-    Deploy to ICP
   </a>
   
 </li>
@@ -366,6 +392,35 @@
   
 </nav>
     
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/event-sourcing" title="Event sourcing pattern" class="md-nav__link">
+      Event sourcing pattern
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs" title="CQRS pattern" class="md-nav__link">
+      CQRS pattern
+    </a>
   </li>
 
     
@@ -416,13 +471,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-to-icp" title="Deploy to ICP" class="md-nav__link">
-    Deploy to ICP
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#deploy-to-openshift-container-platform-ocp" title="Deploy to OpenShift Container Platform (OCP)" class="md-nav__link">
     Deploy to OpenShift Container Platform (OCP)
   </a>
@@ -466,13 +514,23 @@
 <h2 id="deployment-prerequisites">Deployment prerequisites</h2>
 <p>Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequisite Kubernetes artifacts need to be created to support the deployments of application components.  These artifacts need to be created once per unique deployment of the entire application and can be shared between application components in the same overall application deployment.</p>
 <ol>
-<li>Create <code>kafka-brokers</code> ConfigMap</li>
+<li>
+<p>Create <code>kafka-brokers</code> ConfigMap</p>
+<ul>
 <li>Command: <code>kubectl create configmap kafka-brokers --from-literal=brokers='&lt;replace with comma-separated list of brokers&gt;' -n &lt;namespace&gt;</code></li>
 <li>Example: <code>kubectl create configmap kafka-brokers --from-literal=brokers='broker-3-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-2-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-1-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-5-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-0-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-4-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093' -n eda-refarch</code></li>
-<li>Create optional <code>eventstreams-apikey</code> Secret, if you are using Event Streams as your Kafka broker provider</li>
+</ul>
+</li>
+<li>
+<p>Create optional <code>eventstreams-apikey</code> Secret, if you are using Event Streams as your Kafka broker provider. Get the API key from the user interface using an administrator user.</p>
+<ul>
 <li>Command: <code>kubectl create secret generic eventstreams-apikey --from-literal=binding='&lt;replace with api key&gt;' -n &lt;namespace&gt;</code></li>
 <li>Example: <code>kubectl create secret generic eventstreams-apikey --from-literal=binding='z...12345...notanactualkey...67890...a' -n eda-refarch</code></li>
-<li>If you are using Event Streams as your Kafka broker provider and it is deployed via the IBM Cloud Pak for Integration (ICP4I), you will need to create an additional Secret to store the generated Certificates &amp; Truststores.</li>
+</ul>
+</li>
+<li>
+<p>If you are using Event Streams as your Kafka broker provider and it is deployed via the IBM Cloud Pak for Integration (ICP4I), you will need to create an additional Secret to store the generated Certificates &amp; Truststores.</p>
+<ul>
 <li>From the "Connect to this cluster" tab on the landing page of your Event Streams installation, download both the <strong>Java truststore</strong> and the <strong>PEM certificate</strong>.</li>
 <li>Create the Java truststore Secret:<ul>
 <li>Command: <code>kubectl create secret generic &lt;secret-name&gt; --from-file=/path/to/downloaded/file.jks</code></li>
@@ -484,9 +542,27 @@
 <li>Example: <code>kubectl create secret generic es-ca-pemfile --from-file=/Users/osowski/Downloads/es-cert.pem</code></li>
 </ul>
 </li>
+</ul>
+</li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The name of those secrets are used in the Helm chart <code>values.yaml</code> and <code>deployment.yaml</code> files of each project.</p>
+<div class="codehilite"><pre><span></span><span class="n">kafka</span><span class="o">:</span>
+  <span class="n">brokersConfigMap</span><span class="o">:</span> <span class="n">kafka</span><span class="o">-</span><span class="n">brokers</span>
+<span class="n">eventstreams</span><span class="o">:</span>
+  <span class="n">enabled</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">apikeyConfigMap</span><span class="o">:</span> <span class="n">eventstreams</span><span class="o">-</span><span class="n">apikey</span>
+  <span class="n">truststoreRequired</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="n">truststorePath</span><span class="o">:</span> <span class="sr">/config/resources/security/</span><span class="n">es</span><span class="o">-</span><span class="n">ssl</span>
+  <span class="n">truststoreFile</span><span class="o">:</span> <span class="n">es</span><span class="o">-</span><span class="n">cert</span><span class="o">.</span><span class="na">jks</span>
+  <span class="n">truststoreSecret</span><span class="o">:</span> <span class="n">es</span><span class="o">-</span><span class="n">truststore</span><span class="o">-</span><span class="n">jks</span>
+  <span class="n">truststorePassword</span><span class="o">:</span> <span class="n">changeit</span>
+</pre></div>
+
+</div>
 <h2 id="deploy-to-iks">Deploy to IKS</h2>
-<p>Be sure to have <a href="https://ibm-cloud-architecture.github.io/refarch-kc/analysis/readme/">read and done the steps</a> to prepare the IBM Cloud services and get a kubernetes cluster up and running.</p>
+<p>Be sure to have created an IBM kubernetes service cluster (See <a href="https://ibm-cloud-architecture.github.io/refarch-eda/training/eda-skill-journey/#5-hands-on-lab-prepare-ibm-cloud-iks-openshift-environment">this lab</a> for detail)</p>
 <p>Once the two docker images are built, upload them to the IKS private registry</p>
 <div class="codehilite"><pre><span></span>docker push us.icr.io/ibmcaseeda/kc-orderqueryms
 docker push us.icr.io/ibmcaseeda/kc-ordercmdms
@@ -570,48 +646,79 @@ cd order-query-ms
 </tbody>
 </table>
 </blockquote>
-<h2 id="deploy-to-icp">Deploy to ICP</h2>
-<p>N/A</p>
 <h2 id="deploy-to-openshift-container-platform-ocp">Deploy to OpenShift Container Platform (OCP)</h2>
 <h3 id="deploy-to-ocp-311">Deploy to OCP 3.11</h3>
-<p><strong>Cross-component deployment prerequisites:</strong> <em>(needs to be done once per unique deployment of the entire application)</em>
-1. If desired, create a non-default Service Account for usage of deploying and running the K Container reference implementation.  This will become more important in future iterations, so it's best to start small:
-  - Command: <code>oc create serviceaccount -n &lt;target-namespace&gt; kcontainer-runtime</code>
-  - Example: <code>oc create serviceaccount -n eda-refarch kcontainer-runtime</code>
-2. The target Service Account needs to be allowed to run containers as <code>anyuid</code> for the time being:
-  - Command: <code>oc adm policy add-scc-to-user anyuid -z &lt;service-account-name&gt; -n &lt;target-namespace&gt;</code>
-  - Example: <code>oc adm policy add-scc-to-user anyuid -z kcontainer-runtime -n eda-refarch</code>
-  - NOTE: This requires <code>cluster-admin</code> level privileges.</p>
-<p><strong>Perform the following for both <code>order-command-ms</code> and <code>order-query-ms</code> microservices:</strong>
-1. Build and push the Docker image by one of the two options below:
-  - Create a Jenkins project, pointing to the remote GitHub repository for the <code>order-command</code> and <code>order-query</code> microservices, and manually creating the necessary parameters.  Refer to the <code>order-command</code> <a href="../order-command-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> or <code>order-query</code> <a href="../order-query-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> for appropriate parameter values.
-  - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
-    - <code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/order-command-ms:latest order-command-ms/</code>
-    - <code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/order-query-ms:latest order-query-ms/</code>
-    - <code>docker login &lt;private-registry&gt;</code>
-    - <code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/order-command-ms:latest</code>
-    - <code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/order-query-ms:latest</code>
-2. Generate application YAMLs via <code>helm template</code> for both <code>order-command</code> and <code>order-query</code>:
-  - Parameters:
-    - <code>--set image.repository=&lt;private-registry&gt;/&lt;image-namespace&gt;/&lt;image-repository&gt;</code>
-    - <code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (optional or set to blank)
-    - <code>--set kafka.brokersConfigMap=&lt;kafka brokers ConfigMap name&gt;</code>
-    - <code>--set eventstreams.enabled=(true/false)</code> (<code>true</code> when connecting to Event Streams of any kind, <code>false</code> when connecting to Kafka directly)
-    - <code>--set eventstreams.apikeyConfigMap=&lt;kafka api key Secret name&gt;</code>
-    - <code>--set eventstreams.truststoreRequired=(true/false)</code> (<code>true</code> when connecting to Event Streams via ICP4I)
-    - <code>--set eventstreams.truststoreSecret=&lt;eventstreams jks file secret name&gt;</code> (only used when connecting to Event Streams via ICP4I)
-    - <code>--set eventstreams.truststorePassword=&lt;eventstreams jks password&gt;</code> (only used when connecting to Event Streams via ICP4I)
-    - <code>--set serviceAccountName=&lt;service-account-name&gt;</code>
-    - <code>--namespace &lt;target-namespace&gt;</code>
-    - <code>--output-dir &lt;local-template-directory&gt;</code>
-  - Example using Event Streams via ICP4I:
-   <div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>es-kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>es-eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --set eventstreams.truststoreRequired<span class="o">=</span><span class="nb">true</span> --set eventstreams.truststoreSecret<span class="o">=</span>es-truststore-jks --set eventstreams.truststorePassword<span class="o">=</span>password --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
+<p><strong>Cross-component deployment prerequisites:</strong> <em>(needs to be done once per unique deployment of the entire application)</em></p>
+<ol>
+<li>
+<p>If desired, create a non-default Service Account for usage of deploying and running the Reefer Container reference implementation.  This will become more important in future iterations, so it's best to start small:</p>
+<ul>
+<li>Command: <code>oc create serviceaccount -n &lt;target-namespace&gt; kcontainer-runtime</code></li>
+<li>Example: <code>oc create serviceaccount -n eda-refarch kcontainer-runtime</code></li>
+</ul>
+</li>
+<li>
+<p>The target Service Account needs to be allowed to run containers as <code>anyuid</code> for the time being:</p>
+<ul>
+<li>Command: <code>oc adm policy add-scc-to-user anyuid -z &lt;service-account-name&gt; -n &lt;target-namespace&gt;</code></li>
+<li>Example: <code>oc adm policy add-scc-to-user anyuid -z kcontainer-runtime -n eda-refarch</code></li>
+<li>NOTE: This requires <code>cluster-admin</code> level privileges.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Perform the following for both <code>order-command-ms</code> and <code>order-query-ms</code> microservices:</strong></p>
+<ol>
+<li>
+<p>Build and push the Docker image by one of the two options below:</p>
+<ul>
+<li>Create a Jenkins project, pointing to the remote GitHub repository for the <code>order-command</code> and <code>order-query</code> microservices, and manually creating the necessary parameters.  </li>
+</ul>
+<p>Refer to the <code>order-command</code> <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> or <code>order-query</code> <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-query-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> for appropriate parameter values.</p>
+<ul>
+<li>
+<p>Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):</p>
+<ul>
+<li><code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/order-command-ms:latest order-command-ms/</code></li>
+<li><code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/order-query-ms:latest order-query-ms/</code></li>
+<li><code>docker login &lt;private-registry&gt;</code></li>
+<li><code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/order-command-ms:latest</code></li>
+<li><code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/order-query-ms:latest</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Generate application YAMLs via <code>helm template</code> for both <code>order-command</code> and <code>order-query</code>:</p>
+<ul>
+<li>Parameters:<ul>
+<li><code>--set image.repository=&lt;private-registry&gt;/&lt;image-namespace&gt;/&lt;image-repository&gt;</code></li>
+<li><code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (optional or set to blank)</li>
+<li><code>--set kafka.brokersConfigMap=&lt;kafka brokers ConfigMap name&gt;</code></li>
+<li><code>--set eventstreams.enabled=(true/false)</code> (<code>true</code> when connecting to Event Streams of any kind, <code>false</code> when connecting to Kafka directly)</li>
+<li><code>--set eventstreams.apikeyConfigMap=&lt;kafka api key Secret name&gt;</code></li>
+<li><code>--set eventstreams.truststoreRequired=(true/false)</code> (<code>true</code> when connecting to Event Streams via ICP4I)</li>
+<li><code>--set eventstreams.truststoreSecret=&lt;eventstreams jks file secret name&gt;</code> (only used when connecting to Event Streams via ICP4I)</li>
+<li><code>--set eventstreams.truststorePassword=&lt;eventstreams jks password&gt;</code> (only used when connecting to Event Streams via ICP4I)</li>
+<li><code>--set serviceAccountName=&lt;service-account-name&gt;</code></li>
+<li><code>--namespace &lt;target-namespace&gt;</code></li>
+<li><code>--output-dir &lt;local-template-directory&gt;</code></li>
+</ul>
+</li>
+<li>Example using Event Streams via ICP4I:</li>
+</ul>
+<p><div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>es-kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>es-eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --set eventstreams.truststoreRequired<span class="o">=</span><span class="nb">true</span> --set eventstreams.truststoreSecret<span class="o">=</span>es-truststore-jks --set eventstreams.truststorePassword<span class="o">=</span>password --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
 </pre></div>
   - Example using Event Streams hosted on IBM Cloud:
-   <div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
-</pre></div>
-4. Deploy application using <code>oc apply</code>:
-  - <code>oc apply -f templates/ordercommandms/templates</code></p>
+  <div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
+</pre></div></p>
+</li>
+<li>
+<p>Deploy application using <code>oc apply</code>:</p>
+<ul>
+<li><code>oc apply -f templates/ordercommandms/templates</code></li>
+</ul>
+</li>
+</ol>
                 
                   
                 
@@ -632,7 +739,7 @@ cd order-query-ms
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../build-run/" title="Build and run" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../build-run/" title="Build and run locally" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -641,7 +748,7 @@ cd order-query-ms
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Build and run
+                Build and run locally
               </span>
             </div>
           </a>

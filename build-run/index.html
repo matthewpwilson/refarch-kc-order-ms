@@ -36,7 +36,7 @@
     
     
       
-        <title>Build and run - Order Microservice CQRS and Event Sourcing</title>
+        <title>Build and run locally - Order Microservice CQRS and Event Sourcing</title>
       
     
     
@@ -121,7 +121,7 @@
               Order Microservice CQRS and Event Sourcing
             </span>
             <span class="md-header-nav__topic">
-              Build and run
+              Build and run locally
             </span>
           
         </div>
@@ -231,27 +231,84 @@
 
 
   <li class="md-nav__item">
+    <a href=".." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      From event storming to CQRS microservice
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        From event storming to CQRS microservice
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../ddd-applied/" title="Order subdomain - analysis and design" class="md-nav__link">
       Order subdomain - analysis and design
     </a>
   </li>
 
-    
-      
-      
-      
+        
+          
+          
+          
 
 
   <li class="md-nav__item">
-    <a href="https://ibm-cloud-architecture.github.io/refarch-kc-order-ms/#implementation-considerations" title="Implementation considerations" class="md-nav__link">
+    <a href="../implementation-considerations/" title="Implementation considerations" class="md-nav__link">
       Implementation considerations
     </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
       
       
       
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Development practices
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Development practices
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
 
   
 
@@ -264,11 +321,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Build and run
+        Build and run locally
       </label>
     
-    <a href="./" title="Build and run" class="md-nav__link md-nav__link--active">
-      Build and run
+    <a href="./" title="Build and run locally" class="md-nav__link md-nav__link--active">
+      Build and run locally
     </a>
     
       
@@ -315,6 +372,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploy-on-kubernetes-cluster" title="Deploy on kubernetes cluster" class="md-nav__link">
+    Deploy on kubernetes cluster
+  </a>
+  
+</li>
+      
       
       
       
@@ -323,6 +387,23 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../deployments/" title="Deploy to Kubernetes cluster" class="md-nav__link">
+      Deploy to Kubernetes cluster
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
     
@@ -346,18 +427,6 @@
   <li class="md-nav__item">
     <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs" title="CQRS pattern" class="md-nav__link">
       CQRS pattern
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../deployments/" title="Kubernetes Deployments" class="md-nav__link">
-      Kubernetes Deployments
     </a>
   </li>
 
@@ -428,6 +497,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploy-on-kubernetes-cluster" title="Deploy on kubernetes cluster" class="md-nav__link">
+    Deploy on kubernetes cluster
+  </a>
+  
+</li>
+      
       
       
       
@@ -448,40 +524,53 @@
                 
                 
                 <h1 id="build-and-run-the-order-microsercives-locally">Build and run the order microsercives locally</h1>
-<p>We support different deployment models: local with docker-compose, and remote using kubernetes on IBM Cloud (IKS), or on Openshift. To build and run we are proposing some scripts. Each script accepts an argument:</p>
+<p>We support different deployment models: local with docker-compose, and remote using kubernetes on IBM Cloud (IKS), or on premise with Openshift. To build and run we are proposing to use some shell scripts. Each script accepts one argument:</p>
 <ul>
 <li>LOCAL (default is argument is omitted)</li>
 <li>IBM_CLOUD</li>
 </ul>
-<p>This argument is really used to set environment variables used in the code in a separate script under the <code>refarch-kc</code> project and the <code>scripts</code> folder.</p>
+<p>This argument is used to set environment variables used in the code.  In fact the <code>setenv.sh</code> script is defined in the root <code>refarch-kc</code> project and the <code>scripts</code> folder.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <p>You can have the following software already installed on your computer or use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/docker-java-tools">our docker images</a> to get those dependencies integrated in docker images, which you can use to build, test and package the java programs.</p>
 <ul>
 <li><a href="https://maven.apache.org/install.html">Maven</a></li>
-<li>Java 8: Any compliant JVM should work.</li>
+<li>Java 8: Any compliant JVM should work like:</li>
 <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java 8 JDK from Oracle</a></li>
-<li><a href="http://www.ibm.com/developerworks/java/jdk/">Java 8 JDK from IBM (AIX, Linux, z/OS, IBM i)</a>,
-    or <a href="https://developer.ibm.com/assets/wasdev/#filter/assetTypeFilters=PRODUCT">Download a Liberty server package</a>
-    that contains the IBM JDK (Windows, Linux)</li>
+<li><a href="http://www.ibm.com/developerworks/java/jdk/">Java 8 JDK from IBM (AIX, Linux, z/OS, IBM i)</a></li>
+<li>For IBMCLOUD, you need to be sure to have an Event Stream service defined (See <a href="https://ibm-cloud-architecture.github.io/refarch-kc/deployments/backing-services/#using-ibm-event-streams-hosted-on-ibm-cloud">this note</a> for a simple summary of what to do). </li>
+<li>If you run IBM Event Streams on openshift cluster on premise servers, be sure to get truststore certificates and API key.</li>
+<li>Configure the following topics for both microservices: <code>orderCommands</code>, <code>errors</code>, <code>orders</code>. You can use the script <code>createTopics.sh</code> in the <code>refarch-kc</code> project for that or use the Event Streams user interface.</li>
 </ul>
 <h2 id="build">Build</h2>
-<p>You need to build each microservices independently using maven.</p>
+<p>There are two separate folder to manage the code and scripts for the CQRS command and query part:</p>
+<ul>
+<li>order-command-ms</li>
+<li>order-query-ms</li>
+</ul>
+<p>You need to build each microservice independently using maven.</p>
 <p>Each microservice has its own build script to perform the maven package and build the docker image. See <code>scripts</code> folder under each project.</p>
 <p>Any microservice in this repository can be compiled, unit tested and packaged as war file using maven: <code>mvn package</code></p>
 <ul>
-<li>For order-command-ms</li>
+<li>For order-command-ms, the following command will run unit tests and package the war file, then build a docker image</li>
 </ul>
 <div class="codehilite"><pre><span></span>cd order-command-ms
 ./scripts/buildDocker.sh IBMCLOUD
 </pre></div>
 
+<p>If you want to run the integration test you need to do the following:
+<div class="codehilite"><pre><span></span>source ../../refarch-kc/scripts/setenv.sh IBMCLOUD
+mvn install   
+or
+mvn integration-test
+</pre></div></p>
 <ul>
-<li>For order-query-ms
- <div class="codehilite"><pre><span></span>./scripts/buildDocker.sh IBMCLOUD
-</pre></div></li>
+<li>For order-query-ms</li>
 </ul>
+<div class="codehilite"><pre><span></span>./scripts/buildDocker.sh IBMCLOUD
+</pre></div>
+
 <div class="admonition note">
-<p class="admonition-title">Note<p>The build scripta test if the javatool docker image exists and if so they use it, otherwie they use maven.
+<p class="admonition-title">Note<p>The build scripts test if the javatool docker image exists and if so they use it, otherwise they use maven.
 If you want to use docker compose use LOCAL as parameter.</p>
 </p>
 </div>
@@ -495,7 +584,7 @@ ibmcase/kc-ordercommandms latest
 </pre></div>
 
 <h2 id="run">Run</h2>
-<p>You can always use the maven command to compile and run liberty server for each project. Before doing so be sure to have set the KAFKA_BROKERS and KAFKA_API_KEY environment variables with the command coming from the <code>refarch-kc</code> project, which should be at the same level in folder hierarchy as this repository.</p>
+<p>You can always use the maven command to compile and run liberty server for each project. Before doing so be sure to have set the KAFKA_BROKERS and KAFKA_API_KEY environment variables with the <code>setenv.sh</code> command coming from the <code>refarch-kc</code> project, which should be at the same level in folder hierarchy as this repository.</p>
 <div class="codehilite"><pre><span></span>source ../../refarch-kc/scripts/setenv.sh IBMCLOUD
 </pre></div>
 
@@ -503,13 +592,19 @@ ibmcase/kc-ordercommandms latest
 mvn liberty:run-server
 </pre></div>
 
-<p>But as soon as you need to run integration tests with kafka you need all services up and running.</p>
 <h3 id="with-docker-compose">With docker compose</h3>
-<p>To run the complete solution locally we use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/kc-solution-compose.yml">docker compose</a> from the root project.</p>
+<p>To run the complete solution locally we use <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docker/kc-solution-compose.yml">docker compose</a> from the root <code>refarch-kc</code> project.</p>
+<div class="codehilite"><pre><span></span>docker-compose -f backbone-compose.yml up
+docker-compose -f kc-solution-compose.yml up
+</pre></div>
+
 <p>And to stop everything:</p>
 <div class="codehilite"><pre><span></span>docker-compose -f kc-solution-compose.yml down
 docker-compose -f backbone-compose.yml down
 </pre></div>
+
+<h2 id="deploy-on-kubernetes-cluster">Deploy on kubernetes cluster</h2>
+<p>See <a href="../deployments/">this note.</a></p>
                 
                   
                 
@@ -530,7 +625,7 @@ docker-compose -f backbone-compose.yml down
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../ddd-applied/" title="Order subdomain - analysis and design" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../implementation-considerations/" title="Implementation considerations" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -539,19 +634,19 @@ docker-compose -f backbone-compose.yml down
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Order subdomain - analysis and design
+                Implementation considerations
               </span>
             </div>
           </a>
         
         
-          <a href="../deployments/" title="Kubernetes Deployments" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../deployments/" title="Deploy to Kubernetes cluster" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Kubernetes Deployments
+                Deploy to Kubernetes cluster
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
