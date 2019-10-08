@@ -403,7 +403,7 @@
 <li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/tree/master/order-query-ms">Order query microservice</a></li>
 </ul>
 <p>As some requirements are related to historical query, using an event approach, we need to keep all the events related to what happens to the order. Instead of implementing a complex logic with the query and command services, the event sourcing is supported by using Kafka topics. The following diagram illustrates the CQRS and event sourcing applied to the order management service. Client to the REST api, like a back end for front end app, performs a HTTP POST operation with the order data. The command generates events and persists order on its own data source. The query part is an event consumer and defines its own data projections to support the different queries:</p>
-<p><img alt="" src="order-ms-cqrs-es.png" /> </p>
+<p><img alt="" src="images/order-ms-cqrs-es.png" /> </p>
 <p>The datasource at the command level, may not be necessary, but we want to illustrate here the fact that it is possible to have a SQL based database or a document oriented database to keep the order last state: a call to get /orders/{id} will return the current order state. </p>
 <p>For the query part the projection can be kept in memory or persisted on its own data store. The decision, to go for in memory or to use a database, depends upon the amount of data to join, and the persitence time horizon set at the Kafka topic level. In case of problem or while starting, an event driven service may always rebuild its view by re-reading the topic from the beginning. </p>
 <div class="admonition note">
