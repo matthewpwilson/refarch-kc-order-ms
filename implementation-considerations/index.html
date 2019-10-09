@@ -96,7 +96,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#implementation-considerations" tabindex="1" class="md-skip">
+      <a href="#code-structure" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -299,9 +299,43 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#implementation-considerations" title="Implementation considerations" class="md-nav__link">
-    Implementation considerations
+  <a href="#code-structure" title="Code structure" class="md-nav__link">
+    Code structure
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-layer" title="App layer" class="md-nav__link">
+    App layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-layer" title="Infrastructure Layer" class="md-nav__link">
+    Infrastructure Layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-layer" title="Domain layer" class="md-nav__link">
+    Domain layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#main-classes-of-the-command-service" title="Main classes of the command service" class="md-nav__link">
+    Main classes of the command service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -309,6 +343,26 @@
   <a href="#data-and-event-model" title="Data and Event Model" class="md-nav__link">
     Data and Event Model
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-events" title="Command Events" class="md-nav__link">
+    Command Events
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factual-events" title="Factual Events" class="md-nav__link">
+    Factual Events
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -431,9 +485,43 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#implementation-considerations" title="Implementation considerations" class="md-nav__link">
-    Implementation considerations
+  <a href="#code-structure" title="Code structure" class="md-nav__link">
+    Code structure
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-layer" title="App layer" class="md-nav__link">
+    App layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-layer" title="Infrastructure Layer" class="md-nav__link">
+    Infrastructure Layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-layer" title="Domain layer" class="md-nav__link">
+    Domain layer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#main-classes-of-the-command-service" title="Main classes of the command service" class="md-nav__link">
+    Main classes of the command service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -441,6 +529,26 @@
   <a href="#data-and-event-model" title="Data and Event Model" class="md-nav__link">
     Data and Event Model
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-events" title="Command Events" class="md-nav__link">
+    Command Events
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factual-events" title="Factual Events" class="md-nav__link">
+    Factual Events
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -465,9 +573,8 @@
                 
                   <h1>Implementation considerations</h1>
                 
-                <h2 id="implementation-considerations">Implementation considerations</h2>
-<p>As introduced in the <a href="https://ibm-cloud-architecture.github.io/refarch-kc/design/readme/">solution high level design note</a> the order entity life cycle looks like in the following diagram:</p>
-<p><img alt="" src="../order-life-cycle.png" /></p>
+                <p>As introduced in the <a href="ddd-applied">solution design note</a> the order entity life cycle looks like in the following diagram:</p>
+<p><img alt="" src="../images/order-life-cycle-2.png" /></p>
 <p>The order microservice supports the implementations of this life cycle, using event sourcing and CQRS pattern.</p>
 <p>With <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs/">CQRS</a>, we separate the 'write model' from the 'read model'. The Command microservice implements the 'write model' and exposes a set of REST end points for Creating Order, Updating, Deleting Order and getting Order per ID. The query service will address more complex queries to support adhoc business requirements and most likely will need to join data between different entities like the order, the containers and the voyages. So we have two Java projects to support each service implementation. Each service is packaged as container and deployable to Kubernetes. </p>
 <ul>
@@ -477,22 +584,38 @@
 <p>As some requirements are related to historical query, using an event approach, we need to keep all the events related to what happens to the order. Instead of implementing a complex logic with the query and command services, the event sourcing is supported by using Kafka topics. The following diagram illustrates the CQRS and event sourcing applied to the order management service. Client to the REST api, like a back end for front end app, performs a HTTP POST operation with the order data. The command generates events and persists order on its own data source. The query part is an event consumer and defines its own data projections to support the different queries:</p>
 <p><img alt="" src="../images/order-ms-cqrs-es.png" /> </p>
 <p>The datasource at the command level, may not be necessary, but we want to illustrate here the fact that it is possible to have a SQL based database or a document oriented database to keep the order last state: a call to get /orders/{id} will return the current order state. </p>
-<p>For the query part the projection can be kept in memory or persisted on its own data store. The decision, to go for in memory or to use a database, depends upon the amount of data to join, and the persitence time horizon set at the Kafka topic level. In case of problem or while starting, an event driven service may always rebuild its view by re-reading the topic from the beginning. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>An alternate solution is to have the BFF pushing events to the event source and then having the order service consuming event to persist them, as illustrated in the following diagram:</p>
-<p><img alt="" src="../bff-es-cqrs.png" /></p>
-</div>
+<p>For the query part, the projection can be kept in memory or persisted on its own data store. The decision, to go for in memory or to use a database, depends upon the amount of data to join, and the persitence time horizon set at the Kafka topic level. In case of problem or while starting, an event driven service may always rebuild its view by re-reading the topic from the beginning. </p>
 <p>As the BFF still needs to get order by ID or perform complex queries, it has to access the order service using HTTP, therefore we have prefered to use one communication protocol.  </p>
 <p>The following sequence diagram illustrates the relationships between the components over time:</p>
-<p><img alt="" src="../order-cmd-query-flow.png" /></p>
-<p>To avoid transaction between the database update and the event published, the choice is to publish the event as early as it is received and use a consumer inside the command service to load the data and save to the database. The kafka topic act as a source of trust for this service. This is illustrated in <a href="https://ibm-cloud-architecture.github.io/refarch-eda/evt-microservices/ED-patterns/#the-consistency-challenge">this article.</a></p>
-<p>The /orders POST REST end point source code is <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java#L51-L74">here</a></p>
-<p>and the <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/6de424c443c05262ae013620f5f11b4a1b2e6f90/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderAdminService.java#L35">order events consumer</a> in the command pattern.</p>
-<p>See the class <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/labs/kc/order/command/service/OrderCRUDService.java">OrderCRUDService.java</a>.
-<em> Produce order events to the <code>orders</code> topic. 
-</em> Consume events to update the state of the order or enrich it with new elements.</p>
-<p>When the application starts there is a <a href="https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html">ServletContextListener</a> implementation class started to create a kafka consumer and to subscribe to order events (different types). When consumer reaches an issue to get event it creates an error to the <code>errors</code> topic, so administrator user could replay the events from the last committed offset. Any kafka broker communication issue is shutting down the consumer loop.</p>
+<p><img alt="" src="../images/order-cmd-query-flow.png" /></p>
+<p>To avoid transaction between the database update and the event published, the choice is to publish the command event to a specific kafka topic as early as the shipping order data is received and use a consumer inside the command service to load the data and save to the database. The kafka topic act as a source of trust for this service. This is illustrated in <a href="https://ibm-cloud-architecture.github.io/refarch-eda/design-patterns/cqrs/#the-consistency-challenge">this article.</a></p>
+<h2 id="code-structure">Code structure</h2>
+<p>For the order command microservice we implemented a domain driven design structure and try to use the ubiquituous language in the code. The first difficult practice it to well organize the code: The layering approach is used:</p>
+<p><img alt="" src="../images/code-structure.png" /></p>
+<ul>
+<li><strong>Core</strong> is the building blocks not specific to any domain or technology, containing generic building blocks like Lists, Maps, Case Classes, Actors and Lenses. </li>
+<li><strong>Infrastructure</strong> contains adapters for various technologies such as databases, user interface and external services. </li>
+<li><strong>Domain</strong> is where all business logic resides with classes and methods named using the ubiquitous language for the domain. The business logic and rules go there. It has access to infrastructure and core.</li>
+<li><strong>The App</strong> layer, acts as the entry point to the domain, using Domain terms and objects from the Domain. App includes APIs.
+ API should only expose immutable objects to prevent developers from using the exposed objects to gain access to the underlying domain, thus manipulating the domain.</li>
+</ul>
+<p>A given level can see only the components of its layer or lower</p>
+<h3 id="app-layer">App layer</h3>
+<p>As defined by the list of commands to implements, most those operations are defined in an API. The unique REST resource is the class: <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/app/ShippingOrderResource.java">ShippingOrderResource</a></p>
+<p>When the application starts there is a <a href="https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContextListener.html">ServletContextListener</a> implementation class started to create kafka consumers. When consumers reach an issue to get events, they create an error to the <code>errors</code> topic, so administrator user could replay the events from the last committed offset. Any kafka broker communication issue is shutting down the consumer loop.</p>
+<h3 id="infrastructure-layer">Infrastructure Layer</h3>
+<p>This layer includes Repository and Agents consumer of events as well as event emitters for the command events and the factual events. Normally events are factuals per design. This is just a  little bit of semantic play here, as we are using command events to manage data integrity.</p>
+<h3 id="domain-layer">Domain layer</h3>
+<h3 id="main-classes-of-the-command-service">Main classes of the command service</h3>
+<p><img alt="" src="../images/order-cmd-classes.png" /></p>
+<ul>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/app/ShippingOrderResource.java">ShippingOrderResource</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/domain/service/ShippingOrderService.java">ShippingOrderService</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/infrastructure/repository/ShippingOrderRepository.java">ShippingOrderRepository</a> This is an interface, but there is a mockup implementation to keep the data in memory.</li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/infrastructure/kafka/OrderCommandProducer.java">OrderCommandProducer</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/infrastructure/kafka/OrderCommandAgent.java">OrderCommandAgent</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/src/main/java/ibm/gse/orderms/infrastructure/kafka/OrderEventProducer.java">OrderEventProducer</a></li>
+</ul>
 <h2 id="data-and-event-model">Data and Event Model</h2>
 <p>By applying a domain-driven design we can identify aggregates, entities, value objects and domain events. Those elements help us to be our information model as classes. For any event-driven microservice you need to assess what data to carry in the event and what persist in the potential data source. 
 The following diagram illustrates the different data models in the context of this order microservice:</p>
@@ -506,7 +629,7 @@ The following diagram illustrates the different data models in the context of th
     <span class="n">zipcode</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
 <span class="p">}</span>
 
- <span class="nt">class</span> <span class="nt">Order</span> <span class="p">{</span>
+ <span class="nt">class</span> <span class="nt">ShippinOrder</span> <span class="p">{</span>
     <span class="n">orderID</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
     <span class="n">customerID</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>
     <span class="n">pickupAddress</span><span class="p">:</span> <span class="n">Address</span><span class="p">;</span>
@@ -516,32 +639,10 @@ The following diagram illustrates the different data models in the context of th
     <span class="n">expectedDeliveryDate</span><span class="p">:</span> <span class="n">string</span><span class="p">;</span>   <span class="err">//</span>  <span class="err">date</span> <span class="err">as</span> <span class="err">ISO</span> <span class="err">format</span>
 <span class="p">}</span>
 </pre></div></p>
-<p>The information to persist in the database may be used to do analytics, and get the last status of order. It may look use relational database and may have information like:</p>
-<div class="codehilite"><pre><span></span> <span class="kr">class</span> <span class="nx">Address</span> <span class="p">{</span>
-    <span class="nx">street</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">city</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">country</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">state</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">zipcode</span>: <span class="kt">string</span><span class="p">;</span>
-<span class="p">}</span>
-
- <span class="kr">class</span> <span class="nx">Order</span> <span class="p">{</span>
-    <span class="nx">orderID</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">customerID</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">pickupAddress</span>: <span class="kt">Address</span><span class="p">;</span>
-    <span class="nx">destinationAddress</span>: <span class="kt">Address</span><span class="p">;</span>
-    <span class="nx">productID</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">quantity</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">expectedDeliveryDate</span>: <span class="kt">string</span><span class="p">;</span>   <span class="c1">//  date as ISO format</span>
-    <span class="nx">pickupDate</span>: <span class="kt">string</span><span class="p">;</span>   <span class="c1">//  date as ISO format</span>
-<span class="p">}</span>
-
-<span class="kr">class</span> <span class="nx">OrderContainers</span> <span class="p">{</span>
-    <span class="nx">orderID</span>: <span class="kt">string</span><span class="p">;</span>
-    <span class="nx">containerID</span>: <span class="kt">string</span><span class="p">[];</span>
-<span class="p">}</span>
-</pre></div>
-
+<p>The information to persist in the database may be used to do analytics, and get the last status of order. It may use relational database and may have information like Address table, ShippingOrder table and ReeferOrder join table.</p>
+<h3 id="command-events">Command Events</h3>
+<p>We did use command event to avoid XA transaction between kafka and database. So we use a 'private' topic: <code>orderCommands</code> to queue the command to create or update a Shipping order. The command microservice has an agent to consumer such events, get the shipping order data and save to the database.</p>
+<h3 id="factual-events">Factual Events</h3>
 <p>On the event side we may generate OrderCreated, OrderCancelled,... But what is in the event payload? </p>
 <p>We can propose the following structure where type will help to specify the event type and by getting a generic payload we can have anything in it.</p>
 <div class="codehilite"><pre><span></span><span class="kr">class</span> <span class="nx">OrderEvent</span> <span class="p">{</span>

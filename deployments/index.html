@@ -547,7 +547,7 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The name of those secrets are used in the Helm chart <code>values.yaml</code> and <code>deployment.yaml</code> files of each project.</p>
+<p>The name of those secrets are used in the Helm chart <code>values.yaml</code> and <code>deployment.yaml</code> files of each project. The <code>helm template</code> command will generate service and deployment yaml files with the good value for each chart. (See <a href="#deploy-to-ocp-311">section below</a>)</p>
 <div class="codehilite"><pre><span></span><span class="n">kafka</span><span class="o">:</span>
   <span class="n">brokersConfigMap</span><span class="o">:</span> <span class="n">kafka</span><span class="o">-</span><span class="n">brokers</span>
 <span class="n">eventstreams</span><span class="o">:</span>
