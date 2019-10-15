@@ -671,7 +671,7 @@ cd order-query-ms
 <li>
 <p>Build and push the Docker image by one of the two options below:</p>
 <ul>
-<li>Create a Jenkins project, pointing to the remote GitHub repository for the <code>order-command</code> and <code>order-query</code> microservices, and manually creating the necessary parameters.  </li>
+<li>Create a Jenkins project, pointing to the remote GitHub repository for the <code>order-command</code> and <code>order-query</code> microservices, and manually creating the necessary parameters.</li>
 </ul>
 <p>Refer to the <code>order-command</code> <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-command-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> or <code>order-query</code> <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms/blob/master/order-query-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> for appropriate parameter values.</p>
 <ul>
@@ -692,7 +692,7 @@ cd order-query-ms
 <ul>
 <li>Parameters:<ul>
 <li><code>--set image.repository=&lt;private-registry&gt;/&lt;image-namespace&gt;/&lt;image-repository&gt;</code></li>
-<li><code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (optional or set to blank)</li>
+<li><code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (only required if pulling from an external private registry)</li>
 <li><code>--set kafka.brokersConfigMap=&lt;kafka brokers ConfigMap name&gt;</code></li>
 <li><code>--set eventstreams.enabled=(true/false)</code> (<code>true</code> when connecting to Event Streams of any kind, <code>false</code> when connecting to Kafka directly)</li>
 <li><code>--set eventstreams.apikeyConfigMap=&lt;kafka api key Secret name&gt;</code></li>
@@ -706,10 +706,10 @@ cd order-query-ms
 </li>
 <li>Example using Event Streams via ICP4I:</li>
 </ul>
-<p><div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>es-kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>es-eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --set eventstreams.truststoreRequired<span class="o">=</span><span class="nb">true</span> --set eventstreams.truststoreSecret<span class="o">=</span>es-truststore-jks --set eventstreams.truststorePassword<span class="o">=</span>password --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
+<p><div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set kafka.brokersConfigMap<span class="o">=</span>es-kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>es-eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --set eventstreams.truststoreRequired<span class="o">=</span><span class="nb">true</span> --set eventstreams.truststoreSecret<span class="o">=</span>es-truststore-jks --set eventstreams.truststorePassword<span class="o">=</span>password --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
 </pre></div>
   - Example using Event Streams hosted on IBM Cloud:
-  <div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set image.pullSecret<span class="o">=</span> --set kafka.brokersConfigMap<span class="o">=</span>kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
+  <div class="codehilite"><pre><span></span>helm template --set image.repository<span class="o">=</span>rhos-quay.internal-network.local/browncompute/order-command-ms --set kafka.brokersConfigMap<span class="o">=</span>kafka-brokers --set eventstreams.enabled<span class="o">=</span><span class="nb">true</span> --set eventstreams.apikeyConfigMap<span class="o">=</span>eventstreams-apikey --set <span class="nv">serviceAccountName</span><span class="o">=</span>kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/ordercommandms
 </pre></div></p>
 </li>
 <li>
