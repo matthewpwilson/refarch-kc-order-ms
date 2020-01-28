@@ -524,13 +524,13 @@
                 
                 
                 <h1 id="build-and-run-the-order-microservices-locally">Build and run the order microservices locally</h1>
-<p>We support different deployment models for event streams and the reefer solution: local with docker-compose, and remote using kubernetes on IBM Cloud (IKS), or on premise with Openshift. </p>
-<p>When developing the microservice we can access kafka / event streams remote deployed on IBM Cloud or running locally via docker compose. </p>
+<p>We support different deployment models for event streams and the reefer solution: local with docker-compose, and remote using kubernetes on IBM Cloud (IKS), or on premise with Openshift.</p>
+<p>When developing the microservice we can access kafka / event streams remote deployed on IBM Cloud or running locally via docker compose.</p>
 <p>To build and run we are proposing to use some shell scripts. Each script accepts one argument:</p>
 <ul>
 <li>LOCAL (default if no argument): it uses the kafka image as define in docker compose from the <code>refarch-kc</code> project.</li>
 <li>IBM_CLOUD : to access event streams as service on IBM Cloud.</li>
-<li>ICP : to access event streams deployed on Openshift cluster on premise. </li>
+<li>ICP : to access event streams deployed on Openshift cluster on premise.</li>
 </ul>
 <p>This argument is used to set environment variables used in the code.  In fact the <code>setenv.sh</code> script is used, and is defined in the root <code>refarch-kc</code> project and the <code>scripts</code> folder.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
@@ -540,7 +540,7 @@
 <li>Java 8: Any compliant JVM should work like:</li>
 <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java 8 JDK from Oracle</a></li>
 <li><a href="http://www.ibm.com/developerworks/java/jdk/">Java 8 JDK from IBM (AIX, Linux, z/OS, IBM i)</a></li>
-<li>For IBMCLOUD, you need to be sure to have an Event Stream service defined (See <a href="https://ibm-cloud-architecture.github.io/refarch-kc/deployments/backing-services/#using-ibm-event-streams-hosted-on-ibm-cloud">this note</a> for a simple summary of what to do). </li>
+<li>For IBMCLOUD, you need to be sure to have an Event Stream service defined (See <a href="https://ibm-cloud-architecture.github.io/refarch-kc/deployments/backing-services/#using-ibm-event-streams-hosted-on-ibm-cloud">this note</a> for a simple summary of what to do).</li>
 <li>If you run IBM Event Streams on openshift cluster on premise servers, be sure to get truststore certificates and API key.</li>
 <li>Configure the following topics for both microservices: <code>orderCommands</code>, <code>errors</code>, <code>orders</code>. You can use the script <code>createTopics.sh</code> in the <code>refarch-kc</code> project for that or use the Event Streams user interface.</li>
 </ul>
@@ -562,7 +562,7 @@
 
 <p>If you want to run the integration test you need to do the following:
 <div class="codehilite"><pre><span></span>source ../../refarch-kc/scripts/setenv.sh IBMCLOUD
-mvn install   
+mvn install
 or
 mvn integration-test
 </pre></div></p>
@@ -582,8 +582,8 @@ If you want to use docker compose use LOCAL as parameter.</p>
 </ul>
 <div class="codehilite"><pre><span></span>docker images
 
-ibmcase/kc-orderqueryms  latest b85b43980f35 531MB
-ibmcase/kc-ordercommandms latest 
+ibmcase/kcontainer-order-query-ms  latest b85b43980f35 531MB
+ibmcase/kcontainer-order-command-ms latest 
 </pre></div>
 
 <h2 id="run">Run</h2>
