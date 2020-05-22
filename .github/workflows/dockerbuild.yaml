@@ -60,7 +60,6 @@ jobs:
     - name: Build the order-command docker image
       id: build-command-image
       run: |
-        echo "Build and push the docker image"
         IMAGE_NAME="${DOCKER_R}/${DOCKER_I}"
         docker login -u ${DOCKER_U} -p ${DOCKER_P}
         
@@ -72,6 +71,7 @@ jobs:
         echo "Latest Appsody Release found: ${APPSODY_RELEASE}"
         wget ${APPSODY_RELEASE}
         sudo apt install -f ./appsody_*_amd64.deb
+        echo "Build and push the docker image"
         cd ${WORKDIR}
         appsody build --tag ${IMAGE_NAME}:${IMAGE_TAG} --push
         docker build . --file ${DOCKERFILE} --tag ${IMAGE_NAME}:${IMAGE_TAG}
