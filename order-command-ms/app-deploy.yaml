@@ -16,7 +16,7 @@ metadata:
     description: Eclipse MicroProfile & Jakarta EE on Open Liberty & OpenJ9 using
       Maven
     distribution-scope: public
-    image.opencontainers.org/created: "2020-05-18T08:25:49Z"
+    image.opencontainers.org/created: "2020-05-18T15:46:33+01:00"
     image.opencontainers.org/documentation: https://github.com/josiemundi/refarch-kc-order-ms
     image.opencontainers.org/revision: bb08b5a985b197369fedf6b3728c97e605c32f75
     image.opencontainers.org/source: https://github.com/josiemundi/refarch-kc-order-ms/tree/master
@@ -60,10 +60,11 @@ metadata:
     stack.appsody.dev/id: java-openliberty
     stack.appsody.dev/version: 0.2.12
   name: order-command-ms-app
+  namespace: shipping
 spec:
-  applicationImage: dev.local/order-command-ms-app
+  applicationImage: matthewpwilson/order-command-ms:appsody3
   createKnativeService: false
-  env: 
+  env:
   - name: KAFKA_BROKERS
     valueFrom:
       configMapKeyRef:
