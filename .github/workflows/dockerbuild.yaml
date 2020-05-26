@@ -73,7 +73,7 @@ jobs:
         sudo apt install -f ./appsody_*_amd64.deb
         echo "Build and push the docker image"
         cd ${WORKDIR}
-        appsody build -v --buildah --buildah-options='--format=docker' --tag ${IMAGE_NAME}:${IMAGE_TAG} --push
+        appsody build -v --tag ${IMAGE_NAME}:${IMAGE_TAG} --push
         docker build . --file ${DOCKERFILE} --tag ${IMAGE_NAME}:${IMAGE_TAG}
         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
         docker push ${IMAGE_NAME}
